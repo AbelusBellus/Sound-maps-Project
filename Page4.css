@@ -1,0 +1,301 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background: #FAF8F3;
+    font-family: 'IBM Plex Mono', monospace;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+.page {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FAF8F3;
+    overflow: hidden;
+}
+
+/* ---------- Фоновое изображение ---------- */
+.bg-1 {
+    position: absolute;
+    width: 112.2vw;
+    height: 101.6vh;
+    left: -4.78vw;
+    top: 0;
+    opacity: 0.28;
+    pointer-events: none;
+    object-fit: contain;
+}
+
+/* Вектор */
+.vector {
+    position: absolute;
+    width: 19.42vw;
+    height: auto;
+    left: 3.93vw;
+    top: 15.36vh;
+    pointer-events: none;
+}
+
+/* Текст "sound maps" */
+.title {
+    position: absolute;
+    top: 4.02vh;
+    left: 3.58vw;
+    font-weight: 400;
+    font-size: clamp(16px, 2vw, 34.51px);
+    line-height: 1;
+    text-transform: uppercase;
+    color: #000;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.title:hover { opacity: 0.7; }
+
+/* Номер страницы */
+.page-number {
+    position: absolute;
+    top: 4.02vh;
+    left: 88.68vw;
+    font-weight: 200;
+    font-size: clamp(16px, 2vw, 34.51px);
+    line-height: 1;
+    color: #000;
+    white-space: nowrap;
+}
+
+/* Название города */
+.city-name {
+    position: absolute;
+    top: 11.13vh;
+    left: 13.89vw;
+    font-weight: 200;
+    font-size: clamp(20px, 2vw, 34.51px);
+    line-height: 1.15;
+    color: #000;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* Кнопка Noise map */
+.noise-map-btn {
+    position: absolute;
+    top: 14.07vh;
+    left: 84.91vw;
+    display: flex;
+    align-items: center;
+    gap: 0.8vw;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+.noise-map-btn:hover { opacity: 0.7; }
+.checkbox {
+    width: 1.8vw;
+    height: 1.8vw;
+    min-width: 20px;
+    min-height: 20px;
+    border: 1px solid #000;
+    background-color: transparent;
+    transition: background-color 0.2s;
+}
+.noise-map-btn.active .checkbox { background-color: #000; }
+.btn-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    font-size: clamp(14px, 1.55vw, 26.72px);
+    line-height: 1;
+    color: #000;
+    white-space: nowrap;
+}
+
+/* Контейнер карты (квадрат) */
+#mapContainer {
+    position: absolute;
+    top: 11.13vh;
+    left: 27.13vw;
+    width: 51.3vw;
+    height: 51.3vw;
+    max-height: 79.35vh;
+    border: 1px solid #000000;
+    background: #e0e0e0;
+    overflow: hidden;
+    z-index: 5;
+}
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Панель кнопок времени суток (вертикально, справа от карты) */
+.time-buttons {
+    position: absolute;
+    top: 50%;
+    right: 5vw;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    z-index: 20;
+}
+.time-btn {
+    background: none;
+    border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 200;
+    font-size: clamp(16px, 1.8vw, 34.51px);
+    color: #000;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    white-space: nowrap;
+}
+.time-btn:hover { transform: translateX(-5px); }
+/* Активная кнопка – меняет цвет */
+.time-btn.active-morning { color: #ff8c00; }
+.time-btn.active-day { color: rgba(0,0,0,0.5); }
+.time-btn.active-evening { color: #ff4500; }
+.time-btn.active-night { color: #1e3c72; }
+
+/* Невидимая кнопка авторизации (левый нижний угол) */
+#invisibleAuthBtn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 100;
+    background: transparent;
+}
+
+/* Административная панель */
+.admin-panel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: rgba(250, 248, 243, 0.95);
+    border: 1px solid #000;
+    padding: 10px;
+    border-radius: 8px;
+    z-index: 200;
+    font-size: 12px;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+.admin-panel h3 { margin: 0 0 8px 0; font-size: 16px; }
+.admin-form button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.markers-list div {
+    font-size: 11px;
+    margin: 4px 0;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+}
+.markers-list button {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+/* Глобальный оверлей для оттенения всей страницы (слабая тонировка) */
+.global-tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: background-color 5s ease;
+    z-index: 15;
+}
+
+/* Основной фильтр на карту (накладывается через отдельный div поверх карты) */
+#map-tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: background-color 5s ease;
+    z-index: 10;
+}
+
+/* Адаптивность */
+@media (max-width: 800px) {
+    .title, .page-number, .city-name, .btn-text, .time-btn {
+        white-space: normal;
+    }
+    .page-number { left: auto; right: 5vw; top: 2vh; }
+    .title { top: 2vh; left: 5vw; }
+    .city-name { top: 10vh; left: 5vw; }
+    .noise-map-btn { top: 18vh; left: auto; right: 5vw; }
+    #mapContainer { top: 25vh; left: 10vw; width: 80vw; height: 80vw; }
+    .time-buttons { right: 2vw; gap: 1vh; }
+    .time-btn { font-size: 12px; }
+}
+
+#map-tint {
+    pointer-events: none;
+}
+.global-tint {
+    pointer-events: none;
+}
+
+/* Базовый стиль шумового круга */
+.noise-circle {
+    animation: pulse 2s infinite ease-in-out;
+    transform-origin: center;
+    will-change: opacity, stroke-width;
+}
+
+/* Пульсация прозрачности и обводки */
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+        stroke-width: 1;
+    }
+    50% {
+        opacity: 0.7;
+        stroke-width: 3;
+    }
+    100% {
+        opacity: 0.3;
+        stroke-width: 1;
+    }
+}
+
+/* Анимация появления (волна) — добавляется временно при создании круга */
+.noise-circle-appear {
+    animation: ripple 0.6s ease-out forwards;
+}
+
+@keyframes ripple {
+    0% {
+        r: 0;
+        opacity: 0;
+    }
+    100% {
+        r: var(--target-radius);
+        opacity: 0.3;
+    }
+}
+
+

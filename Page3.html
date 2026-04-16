@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sound Maps — Подольск</title>
+    <!-- Leaflet CSS + плагин эллипсов -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Наши стили -->
+    <link rel="stylesheet" href="Page3.css">
+    <!-- Шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;400;600&display=swap" rel="stylesheet">
+    <!-- CryptoJS для хэширования пароля -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- Leaflet JS и плагин эллипсов -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-ellipse@0.1.0/leaflet-ellipse.js"></script>
+</head>
+<body>
+<div class="page">
+    <!-- Фоновое изображение -->
+    <img src="Images/BG1-1.png" class="bg bg-1" alt="">
+
+    <!-- Вектор под названием города -->
+    <img src="Images/Vector1.png" class="vector" alt="">
+
+    <!-- Текст "sound maps" (клик для возврата на главную) -->
+    <div class="title">sound maps</div>
+
+    <!-- Номер страницы -->
+    <div class="page-number">page 3</div>
+
+    <!-- Название города -->
+    <div class="city-name">Podolsk</div>
+
+    <!-- Кнопка Noise map с чекбоксом -->
+    <div class="noise-map-btn" id="noiseMapBtn">
+        <div class="checkbox"></div>
+        <span class="btn-text">Noise map</span>
+    </div>
+
+    <!-- Контейнер для карты -->
+    <div id="mapContainer">
+        <div id="map"></div>
+    </div>
+
+    <!-- Панель кнопок времени суток (вертикальная, справа от карты) -->
+    <div class="time-buttons">
+        <button class="time-btn" data-phase="morning">Morning</button>
+        <button class="time-btn" data-phase="day">Day</button>
+        <button class="time-btn" data-phase="evening">Evening</button>
+        <button class="time-btn" data-phase="night">Night</button>
+    </div>
+
+    <!-- Невидимая кнопка авторизации (левый нижний угол) -->
+    <div id="invisibleAuthBtn"></div>
+
+    <!-- Административная панель (скрыта по умолчанию) -->
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <h3>Управление маркерами (Подольск)</h3>
+        <div class="admin-form">
+            <button id="clearMarkersBtn">🗑️ Очистить все маркеры</button>
+        </div>
+        <div id="markersList"></div>
+    </div>
+
+    <!-- Дополнительный оверлей для оттенения всей страницы (слабая тонировка) -->
+    <div id="globalTint" class="global-tint"></div>
+</div>
+
+<script src="Page3.js"></script>
+</body>
+</html>
