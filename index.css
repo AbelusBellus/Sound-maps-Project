@@ -1,4 +1,3 @@
-/* ========== ВЕСЬ ФАЙЛ index.css ========== */
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +15,7 @@ body {
     padding: 20px;
 }
 
-/* Десктопная версия */
+/* Контейнер, который занимает всё доступное место, но сохраняет пропорции макета */
 .page {
     position: relative;
     width: 100%;
@@ -28,6 +27,7 @@ body {
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
+/* Общие стили для фоновых изображений (десктоп) */
 .bg {
     position: absolute;
     pointer-events: none;
@@ -55,6 +55,8 @@ body {
     top: 6.04%;
     opacity: 0.33;
 }
+
+/* Текст "sound maps" */
 .title {
     position: absolute;
     top: 4.02%;
@@ -64,6 +66,7 @@ body {
     line-height: 1;
     text-transform: uppercase;
     color: #000;
+    letter-spacing: 0;
 }
 .page-number {
     position: absolute;
@@ -83,6 +86,7 @@ body {
     line-height: 1;
     text-transform: uppercase;
     text-decoration: underline;
+    text-decoration-style: solid;
     color: #000;
 }
 .city-list {
@@ -115,49 +119,50 @@ body {
     font-size: clamp(16px, 1.8vw, 34.51px);
     line-height: 1;
     text-transform: uppercase;
-    text-decoration: underline dotted;
+    text-decoration: underline;
+    text-decoration-style: dotted;
     text-decoration-thickness: 7.5%;
     text-underline-offset: 25%;
     color: #000;
     cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s;
     width: fit-content;
     white-space: nowrap;
 }
-.flashbacks:hover {
-    opacity: 0.7;
-    transform: translateX(5px);
-}
 
-/* Мобильные фоны – скрыты по умолчанию */
+/* Мобильные фоны – по умолчанию скрыты */
 .bg-mobile {
     display: none;
 }
+
+/* Мобильный заголовок – скрыт по умолчанию */
 .mobile-cities-header {
     display: none;
 }
 
-/* ========== МОБИЛЬНАЯ ВЕРСИЯ ДО 480px ========== */
+/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ЭКРАНОВ ДО 480px ========== */
 @media (max-width: 480px) {
     body {
         padding: 0;
+        background: #FAF8F3;
     }
     .page {
         display: flex;
         flex-direction: column;
         width: 100%;
-        max-width: 100%;
         min-height: 100vh;
-        height: auto;
         aspect-ratio: auto;
         overflow-x: hidden;
-        box-shadow: none;
         background-color: #FAF8F3;
+        position: relative;
+        box-shadow: none;
     }
 
     /* Скрываем десктопные фоны */
     .desktop-bg {
         display: none;
     }
+
     /* Мобильные фоны */
     .bg-mobile {
         display: block;
@@ -189,12 +194,17 @@ body {
         z-index: 1;
     }
 
-    /* Шапка */
+    /* Шапка: заголовок и номер страницы */
     .title {
         position: relative;
         order: 1;
         margin: 63.67px 0 0 34.48px;
         font-size: 20px;
+        font-weight: 400;
+        line-height: 100%;
+        text-transform: uppercase;
+        color: #000;
+        z-index: 2;
         white-space: nowrap;
     }
     .page-number {
@@ -202,6 +212,9 @@ body {
         order: 1;
         margin: -26px 34.48px 0 auto;
         font-size: 16px;
+        font-weight: 200;
+        color: #000;
+        z-index: 2;
         text-align: right;
     }
 
@@ -211,6 +224,7 @@ body {
         display: flex;
         margin: 20px 0 0 34.48px;
         cursor: pointer;
+        z-index: 10;
         align-items: baseline;
         gap: 8px;
     }
@@ -237,13 +251,14 @@ body {
         flex-direction: column;
         gap: 20px;
         margin: 20px 0 0 112.07px;
+        z-index: 10;
     }
     .city-list.open {
         display: flex;
-        margin-bottom: 20px; /* добавляем отступ снизу, чтобы отодвинуть следующий элемент */
     }
     .city {
         font-size: 20px;
+        font-weight: 200;
         white-space: nowrap;
     }
 
@@ -251,18 +266,21 @@ body {
     .flashbacks {
         order: 4;
         position: relative;
-        margin: 20px 0 40px 34.48px;
+        margin: 20px 0 30px 34.48px;
         width: auto;
         max-width: calc(100% - 68px);
         font-size: 20px;
+        line-height: 100%;
+        text-transform: uppercase;
+        text-decoration: underline dotted;
+        text-decoration-thickness: 7.5%;
+        text-underline-offset: 25%;
         white-space: normal;
         word-break: break-word;
-    }
-    .flashbacks:hover {
-        transform: none;
+        z-index: 10;
     }
 
-    /* Скрыть десктопный заголовок */
+    /* Скрываем десктопный section-title */
     .section-title {
         display: none;
     }
