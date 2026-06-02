@@ -1,3 +1,4 @@
+/* ========== ВЕСЬ ФАЙЛ Page2.css ========== */
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +22,7 @@ body {
     overflow: hidden;
 }
 
-/* ---------- Фоновое изображение ---------- */
+/* ---------- Фоновое изображение (десктоп) ---------- */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -33,7 +34,7 @@ body {
     object-fit: contain;
 }
 
-/* Вектор */
+/* Вектор (стрелка) */
 .vector {
     position: absolute;
     width: 19.42vw;
@@ -157,13 +158,12 @@ body {
     white-space: nowrap;
 }
 .time-btn:hover { transform: translateX(-5px); }
-/* Активная кнопка – меняет цвет */
 .time-btn.active-morning { color: #ff8c00; }
 .time-btn.active-day { color: rgba(0,0,0,0.5); }
 .time-btn.active-evening { color: #ff4500; }
 .time-btn.active-night { color: #1e3c72; }
 
-/* Невидимая кнопка авторизации (левый нижний угол) */
+/* Невидимая кнопка авторизации */
 #invisibleAuthBtn {
     position: absolute;
     bottom: 20px;
@@ -214,7 +214,7 @@ body {
     font-size: 10px;
 }
 
-/* Глобальный оверлей для оттенения всей страницы (слабая тонировка) */
+/* Глобальный оверлей */
 .global-tint {
     position: absolute;
     top: 0;
@@ -225,8 +225,6 @@ body {
     transition: background-color 5s ease;
     z-index: 15;
 }
-
-/* Основной фильтр на карту (накладывается через отдельный div поверх карты) */
 #map-tint {
     position: absolute;
     top: 0;
@@ -238,7 +236,7 @@ body {
     z-index: 10;
 }
 
-/* Адаптивность */
+/* Адаптивность для десктопов при малой ширине (опционально) */
 @media (max-width: 800px) {
     .title, .page-number, .city-name, .btn-text, .time-btn {
         white-space: normal;
@@ -252,12 +250,8 @@ body {
     .time-btn { font-size: 12px; }
 }
 
-#map-tint {
-    pointer-events: none;
-}
-.global-tint {
-    pointer-events: none;
-}
+#map-tint { pointer-events: none; }
+.global-tint { pointer-events: none; }
 
 /* Базовый стиль шумового круга */
 .noise-circle {
@@ -265,35 +259,145 @@ body {
     transform-origin: center;
     will-change: opacity, stroke-width;
 }
-
-/* Пульсация прозрачности и обводки */
 @keyframes pulse {
-    0% {
-        opacity: 0.3;
-        stroke-width: 1;
-    }
-    50% {
-        opacity: 0.7;
-        stroke-width: 3;
-    }
-    100% {
-        opacity: 0.3;
-        stroke-width: 1;
-    }
+    0% { opacity: 0.3; stroke-width: 1; }
+    50% { opacity: 0.7; stroke-width: 3; }
+    100% { opacity: 0.3; stroke-width: 1; }
 }
 
-/* Анимация появления (волна) — добавляется временно при создании круга */
-.noise-circle-appear {
-    animation: ripple 0.6s ease-out forwards;
-}
-
-@keyframes ripple {
-    0% {
-        r: 0;
-        opacity: 0;
+/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ЭКРАНОВ ДО 480px ========== */
+@media (max-width: 480px) {
+    body {
+        overflow: auto;
+        height: auto;
+        background: #FAF8F3;
     }
-    100% {
-        r: var(--target-radius);
-        opacity: 0.3;
+    .page {
+        width: 393px;
+        height: 852px;
+        background-color: #FAF8F3;
+        overflow: visible;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    /* Скрываем десктопный фон */
+    .desktop-bg {
+        display: none;
+    }
+
+    /* Мобильный фон BG2-1.png */
+    .bg-mobile {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        opacity: 0.28;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Вектор (стрелка) – по макету */
+    .vector {
+        position: absolute;
+        width: 143.62px;
+        height: auto;
+        top: 143.82px;
+        left: 35.45px;
+        z-index: 1;
+    }
+
+    /* Текст sound maps */
+    .title {
+        top: 63.67px;
+        left: 34.48px;
+        font-size: 20px;
+        white-space: nowrap;
+        z-index: 2;
+    }
+
+    /* Номер страницы – можно скрыть или оставить, но по макету не указан, скроем */
+    .page-number {
+        display: none;
+    }
+
+    /* Название города */
+    .city-name {
+        top: 113.05px;
+        left: 64.92px;
+        font-size: 22.46px;
+        font-weight: 200;
+        white-space: nowrap;
+        z-index: 2;
+    }
+
+    /* Кнопка Noise map */
+    .noise-map-btn {
+        top: 126.53px;
+        left: 253.96px;
+        gap: 5px;
+        z-index: 10;
+    }
+    .checkbox {
+        width: 18px;
+        height: 18px;
+        border-width: 1px;
+    }
+    .btn-text {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+
+    /* Карта */
+    #mapContainer {
+        position: absolute;
+        top: 219.64px;
+        left: 34.51px;
+        width: 323.97px;
+        height: 323.97px;
+        border: 0.37px solid #000000;
+        z-index: 5;
+    }
+
+    /* Кнопки времени суток – размещаем под картой горизонтально */
+    .time-buttons {
+        position: absolute;
+        top: 570px; /* отступ после карты */
+        left: 34.51px;
+        right: auto;
+        transform: none;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        z-index: 20;
+    }
+    .time-btn {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+    .time-btn:hover {
+        transform: none;
+    }
+
+    /* Невидимая кнопка авторизации – оставляем внизу слева */
+    #invisibleAuthBtn {
+        bottom: 10px;
+        left: 10px;
+        width: 60px;
+        height: 30px;
+    }
+
+    /* Админ-панель – чуть меньше и сдвинута */
+    .admin-panel {
+        width: 260px;
+        bottom: 10px;
+        right: 10px;
+        max-height: 40vh;
+    }
+
+    /* Оверлеи карты */
+    #map-tint, .global-tint {
+        z-index: 10;
     }
 }
