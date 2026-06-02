@@ -305,7 +305,7 @@ function setupMapClick() {
     if (!map) return;
     map.on('click', (e) => {
         if (!isAdmin) {
-            alert('Авторизуйтесь для добавления маркеров (невидимая кнопка в левом нижнем углу, пароль INFJ)');
+            alert('Авторизуйтесь для добавления маркеров');
             return;
         }
         const lat = e.latlng.lat;
