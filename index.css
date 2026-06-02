@@ -140,19 +140,20 @@ body {
     display: none;
 }
 
-/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ЭКРАНОВ ДО 393px ========== */
-@media (max-width: 393px) {
+/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ЭКРАНОВ ДО 480px ========== */
+@media (max-width: 480px) {
     body {
         padding: 0;
         background: #FAF8F3;
     }
     .page {
-        max-width: 393px;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
         aspect-ratio: auto;
-        width: 393px;
-        height: 852px;
-        margin: 0 auto;
-        overflow: visible;
+        overflow-x: hidden;
+        position: relative;
         box-shadow: none;
         background-color: #FAF8F3;
     }
@@ -205,6 +206,7 @@ body {
         text-transform: uppercase;
         color: #000;
         z-index: 2;
+        white-space: nowrap;
     }
     /* Номер страницы */
     .page-number {
@@ -212,7 +214,7 @@ body {
         top: 63.67px;
         left: auto;
         right: 34.48px;
-        font-size: 16px; /* подбираем визуально */
+        font-size: 16px;
         font-weight: 200;
         color: #000;
         z-index: 2;
@@ -258,14 +260,14 @@ body {
         text-decoration: none;
     }
 
-    /* Список городов: изначально скрыт, отображается при открытии */
+    /* Список городов: изначально скрыт */
     .city-list {
         position: absolute;
         top: 291px;
         left: 112.07px;
-        display: none; /* скрыт по умолчанию */
+        display: none;
         flex-direction: column;
-        gap: 20px; /* подгоняется под дизайн: между городами расстояние */
+        gap: 20px;
         z-index: 10;
         background: transparent;
     }
@@ -279,7 +281,6 @@ body {
         margin-bottom: 0;
         color: #000;
         cursor: pointer;
-        transition: none;
         white-space: nowrap;
     }
     .city:hover {
@@ -292,7 +293,8 @@ body {
         position: absolute;
         top: 244px;
         left: 34.48px;
-        width: 336.54px;
+        width: auto;
+        max-width: calc(100% - 68px);
         font-size: 20px;
         line-height: 100%;
         text-transform: uppercase;
