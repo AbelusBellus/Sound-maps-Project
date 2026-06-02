@@ -172,6 +172,7 @@ body {
         width: 100%;
         height: auto;
         z-index: 0;
+        opacity: 33%;
     }
     .bg1-2-mobile {
         width: 473.78px;
