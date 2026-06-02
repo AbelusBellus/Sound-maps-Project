@@ -9,18 +9,35 @@
 </head>
 <body>
     <div class="page">
-        <img src="Images/BG1-1.png" class="bg bg-1" alt="">
-        <img src="Images/BG1-2.png" class="bg bg-2" alt="">
-        <img src="Images/BG1-3.png" class="bg bg-3" alt="">
+        <!-- Десктопные фоны -->
+        <img src="Images/BG1-1.png" class="bg bg-1 desktop-bg" alt="">
+        <img src="Images/BG1-2.png" class="bg bg-2 desktop-bg" alt="">
+        <img src="Images/BG1-3.png" class="bg bg-3 desktop-bg" alt="">
+
+        <!-- Мобильные фоны -->
+        <img src="Images/BG2-1.png" class="bg-mobile bg2-1" alt="">
+        <img src="Images/BG1-2.png" class="bg-mobile bg1-2-mobile" alt="">
+        <img src="Images/BG1-3.png" class="bg-mobile bg1-3-mobile" alt="">
 
         <div class="title">sound maps</div>
         <div class="page-number">page 1</div>
+
+        <!-- Десктопный заголовок "cities" -->
         <div class="section-title">cities</div>
+
+        <!-- Мобильный заголовок "cities" с плюсом -->
+        <div class="mobile-cities-header">
+            <span class="cities-text">cities</span>
+            <span class="cities-toggle">+</span>
+        </div>
+
+        <!-- Список городов (одинаков для обеих версий) -->
         <div class="city-list">
             <div class="city" data-city="Moscow">Moscow</div>
             <div class="city" data-city="Podolsk">Podolsk</div>
             <div class="city" data-city="Nijni Novgorod">Nijni Novgorod</div>
         </div>
+
         <div class="flashbacks">flashbacks [[nɒstˈælʤɪk-ɪnˈdjuːsɪŋ]]</div>
     </div>
     <script src="index.js"></script>
