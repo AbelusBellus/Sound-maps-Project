@@ -388,12 +388,17 @@ body {
     }
 
     /* Админ-панель – чуть меньше и сдвинута */
-    .admin-panel {
-        width: 260px;
-        bottom: 10px;
-        right: 10px;
-        max-height: 40vh;
-    }
+.admin-panel {
+    top: 620px;              /* сразу после горизонтальных кнопок (570px + отступ) */
+    left: 34.51px;
+    right: auto;
+    bottom: auto;
+    width: calc(100% - 69px);
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 12px;
+    z-index: 25;             /* выше карты, но ниже кнопок? кнопки обычно 20, оставим 25 */
+}
 
     /* Оверлеи карты */
     #map-tint, .global-tint {
