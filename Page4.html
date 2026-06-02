@@ -10,30 +10,35 @@
     <link rel="stylesheet" href="Page4.css">
     <!-- Шрифт -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;400;600&display=swap" rel="stylesheet">
-    <!-- CryptoJS для хэширования пароля -->
+    <!-- CryptoJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <!-- Leaflet JS и плагин эллипсов -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-ellipse@0.1.0/leaflet-ellipse.js"></script>
+    <!-- Pannellum -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 </head>
 <body>
 <div class="page">
-    <!-- Фоновое изображение -->
-    <img src="Images/BG1-1.png" class="bg bg-1" alt="">
+    <!-- Десктопные фоны -->
+    <img src="Images/BG1-1.png" class="bg bg-1 desktop-bg" alt="">
+    <!-- Мобильный фон BG2-1.png -->
+    <img src="Images/BG2-1.png" class="bg-mobile bg2-1" alt="">
 
-    <!-- Вектор под названием города -->
+    <!-- Вектор под названием города (стрелка) -->
     <img src="Images/Vector1.png" class="vector" alt="">
 
-    <!-- Текст "sound maps" (клик для возврата на главную) -->
+    <!-- Текст "sound maps" -->
     <div class="title">sound maps</div>
 
     <!-- Номер страницы -->
     <div class="page-number">page 4</div>
 
     <!-- Название города -->
-    <div class="city-name">Nijni<br>Novgorod</div>
+    <div class="city-name">Nijni Novgorod</div>
 
-    <!-- Кнопка Noise map с чекбоксом -->
+    <!-- Кнопка Noise map -->
     <div class="noise-map-btn" id="noiseMapBtn">
         <div class="checkbox"></div>
         <span class="btn-text">Noise map</span>
@@ -44,7 +49,7 @@
         <div id="map"></div>
     </div>
 
-    <!-- Панель кнопок времени суток (вертикальная, справа от карты) -->
+    <!-- Панель кнопок времени суток (будет расположена под картой на мобильных) -->
     <div class="time-buttons">
         <button class="time-btn" data-phase="morning">Morning</button>
         <button class="time-btn" data-phase="day">Day</button>
@@ -52,10 +57,10 @@
         <button class="time-btn" data-phase="night">Night</button>
     </div>
 
-    <!-- Невидимая кнопка авторизации (левый нижний угол) -->
+    <!-- Невидимая кнопка авторизации -->
     <div id="invisibleAuthBtn"></div>
 
-    <!-- Административная панель (скрыта по умолчанию) -->
+    <!-- Административная панель -->
     <div id="adminPanel" class="admin-panel" style="display: none;">
         <h3>Управление маркерами (Нижний Новгород)</h3>
         <div class="admin-form">
@@ -64,7 +69,7 @@
         <div id="markersList"></div>
     </div>
 
-    <!-- Дополнительный оверлей для оттенения всей страницы (слабая тонировка) -->
+    <!-- Глобальный оверлей -->
     <div id="globalTint" class="global-tint"></div>
 </div>
 
