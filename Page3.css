@@ -21,7 +21,6 @@ body {
     overflow: hidden;
 }
 
-/* ---------- Фоновое изображение (десктоп) ---------- */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -33,7 +32,6 @@ body {
     object-fit: contain;
 }
 
-/* Вектор (стрелка) */
 .vector {
     position: absolute;
     width: 19.42vw;
@@ -43,7 +41,6 @@ body {
     pointer-events: none;
 }
 
-/* Текст "sound maps" */
 .title {
     position: absolute;
     top: 4.02vh;
@@ -59,7 +56,6 @@ body {
 }
 .title:hover { opacity: 0.7; }
 
-/* Номер страницы */
 .page-number {
     position: absolute;
     top: 4.02vh;
@@ -71,7 +67,6 @@ body {
     white-space: nowrap;
 }
 
-/* Название города */
 .city-name {
     position: absolute;
     top: 11.13vh;
@@ -84,7 +79,6 @@ body {
     cursor: pointer;
 }
 
-/* Кнопка Noise map */
 .noise-map-btn {
     position: absolute;
     top: 14.07vh;
@@ -116,7 +110,6 @@ body {
     white-space: nowrap;
 }
 
-/* Контейнер карты (квадрат) */
 #mapContainer {
     position: absolute;
     top: 11.13vh;
@@ -134,35 +127,6 @@ body {
     height: 100%;
 }
 
-/* Панель кнопок времени суток (вертикально, справа от карты) */
-.time-buttons {
-    position: absolute;
-    top: 50%;
-    right: 5vw;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5vh;
-    z-index: 20;
-}
-.time-btn {
-    background: none;
-    border: none;
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 200;
-    font-size: clamp(16px, 1.8vw, 34.51px);
-    color: #000;
-    cursor: pointer;
-    transition: color 0.2s, transform 0.2s;
-    white-space: nowrap;
-}
-.time-btn:hover { transform: translateX(-5px); }
-.time-btn.active-morning { color: #ff8c00; }
-.time-btn.active-day { color: rgba(0,0,0,0.5); }
-.time-btn.active-evening { color: #ff4500; }
-.time-btn.active-night { color: #1e3c72; }
-
-/* Невидимая кнопка авторизации */
 #invisibleAuthBtn {
     position: absolute;
     bottom: 20px;
@@ -174,7 +138,6 @@ body {
     background: transparent;
 }
 
-/* Административная панель */
 .admin-panel {
     position: absolute;
     bottom: 20px;
@@ -213,7 +176,6 @@ body {
     font-size: 10px;
 }
 
-/* Глобальный оверлей */
 .global-tint {
     position: absolute;
     top: 0;
@@ -234,25 +196,9 @@ body {
     transition: background-color 5s ease;
     z-index: 10;
 }
-
-/* Адаптивность для десктопов при малой ширине (опционально) */
-@media (max-width: 800px) {
-    .title, .page-number, .city-name, .btn-text, .time-btn {
-        white-space: normal;
-    }
-    .page-number { left: auto; right: 5vw; top: 2vh; }
-    .title { top: 2vh; left: 5vw; }
-    .city-name { top: 10vh; left: 5vw; }
-    .noise-map-btn { top: 18vh; left: auto; right: 5vw; }
-    #mapContainer { top: 25vh; left: 10vw; width: 80vw; height: 80vw; }
-    .time-buttons { right: 2vw; gap: 1vh; }
-    .time-btn { font-size: 12px; }
-}
-
 #map-tint { pointer-events: none; }
 .global-tint { pointer-events: none; }
 
-/* Базовый стиль шумового круга */
 .noise-circle {
     animation: pulse 2s infinite ease-in-out;
     transform-origin: center;
@@ -264,7 +210,7 @@ body {
     100% { opacity: 0.3; stroke-width: 1; }
 }
 
-/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ЭКРАНОВ ДО 480px ========== */
+/* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
 @media (max-width: 480px) {
     body {
         overflow: auto;
@@ -279,13 +225,7 @@ body {
         margin: 0 auto;
         position: relative;
     }
-
-    /* Скрываем десктопный фон */
-    .desktop-bg {
-        display: none;
-    }
-
-    /* Мобильный фон BG2-1.png */
+    .desktop-bg { display: none; }
     .bg-mobile {
         position: absolute;
         top: 0;
@@ -296,8 +236,6 @@ body {
         pointer-events: none;
         z-index: 0;
     }
-
-    /* Вектор (стрелка) – по макету */
     .vector {
         position: absolute;
         width: 143.62px;
@@ -306,8 +244,6 @@ body {
         left: 35.45px;
         z-index: 1;
     }
-
-    /* Текст sound maps */
     .title {
         top: 63.67px;
         left: 34.48px;
@@ -315,13 +251,7 @@ body {
         white-space: nowrap;
         z-index: 2;
     }
-
-    /* Номер страницы – можно скрыть или оставить, но по макету не указан, скроем */
-    .page-number {
-        display: none;
-    }
-
-    /* Название города */
+    .page-number { display: none; }
     .city-name {
         top: 113.05px;
         left: 64.92px;
@@ -330,11 +260,10 @@ body {
         white-space: nowrap;
         z-index: 2;
     }
-
-    /* Кнопка Noise map */
     .noise-map-btn {
-        top: 126.53px;
-        left: 253.96px;
+        top: 63.67px;
+        right: 34.48px;
+        left: auto;
         gap: 5px;
         z-index: 10;
     }
@@ -347,8 +276,6 @@ body {
         font-size: 16px;
         white-space: nowrap;
     }
-
-    /* Карта */
     #mapContainer {
         position: absolute;
         top: 219.64px;
@@ -358,49 +285,23 @@ body {
         border: 0.37px solid #000000;
         z-index: 5;
     }
-
-    /* Кнопки времени суток – размещаем под картой горизонтально */
-    .time-buttons {
-        position: absolute;
-        top: 570px; /* отступ после карты */
-        left: 34.51px;
-        right: auto;
-        transform: none;
-        display: flex;
-        flex-direction: row;
-        gap: 15px;
-        z-index: 20;
-    }
-    .time-btn {
-        font-size: 16px;
-        white-space: nowrap;
-    }
-    .time-btn:hover {
-        transform: none;
-    }
-
-    /* Невидимая кнопка авторизации – оставляем внизу слева */
     #invisibleAuthBtn {
         bottom: 10px;
         left: 10px;
         width: 60px;
         height: 30px;
     }
-
-    /* Админ-панель – чуть меньше и сдвинута */
-.admin-panel {
-    top: 620px;              
-    left: 34.51px;
-    right: auto;
-    bottom: auto;
-    width: calc(100% - 69px);
-    max-height: 200px;
-    overflow-y: auto;
-    font-size: 12px;
-    z-index: 25;             
-}
-
-    /* Оверлеи карты */
+    .admin-panel {
+        top: 620px;
+        left: 34.51px;
+        right: auto;
+        bottom: auto;
+        width: calc(100% - 69px);
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 12px;
+        z-index: 25;
+    }
     #map-tint, .global-tint {
         z-index: 10;
     }
