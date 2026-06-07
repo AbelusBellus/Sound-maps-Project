@@ -144,9 +144,9 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
 }
 
 // ==================== МАРКЕРЫ ====================
-// Теперь все маркеры имеют единый цвет (как у фазы day)
+// Все маркеры одного цвета
 function getMarkerIcon() {
-    const color = '#fff0d9';  // единый цвет
+    const color = '#fff0d9';
     return L.divIcon({
         html: `<div style="background: ${color}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
         iconSize: [24, 24],
@@ -163,7 +163,7 @@ function stopCurrentAudio() {
 }
 
 function addMarkerToMap(markerData) {
-    const icon = getMarkerIcon(); // больше не передаём phase
+    const icon = getMarkerIcon();
     const marker = L.marker([markerData.lat, markerData.lng], { icon }).addTo(map);
     const popupContent = `<strong>${markerData.title || 'Без названия'}</strong><br>${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
     marker.bindPopup(popupContent);
@@ -202,11 +202,10 @@ function refreshMarkers() {
     markers = [];
     if (noiseLayer) noiseLayer.clearLayers();
 
-    // Показываем ВСЕ маркеры
     allMarkersData.forEach(data => addMarkerToMap(data));
 }
 
-// ==================== ТОНИРОВКА ПО ВРЕМЕНИ СУТОК ====================
+// ==================== ТОНИРОВКА ПО ВРЕМЕНИ ====================
 function setTintByTime() {
     const hour = new Date().getHours();
     let phase;
@@ -215,14 +214,14 @@ function setTintByTime() {
     else if (hour >= 18 && hour < 22) phase = 'evening';
     else phase = 'night';
     
-    currentPhase = phase; // не используется для фильтрации, только для тонировки
+    currentPhase = phase;
     if (mapTintDiv) mapTintDiv.style.backgroundColor = PHASE_COLORS[phase].map;
     if (globalTintDiv) globalTintDiv.style.backgroundColor = PHASE_COLORS[phase].global;
 }
 
 function startTintUpdater() {
     setTintByTime();
-    setInterval(setTintByTime, 60000); // обновляем каждую минуту
+    setInterval(setTintByTime, 60000);
 }
 
 // ==================== АДМИНИСТРИРОВАНИЕ ====================
@@ -259,7 +258,6 @@ window.deleteMarker = function(index) {
 function addMarker(lat, lng, title, soundUrl) {
     if (!isAdmin) { alert('Нет прав'); return; }
     const noiseParams = generateRandomNoiseParams();
-    // Больше не спрашиваем фазу, ставим 'day' как заглушку
     const newMarker = { lat, lng, title, soundUrl, phase: 'day', noiseParams };
     allMarkersData.push(newMarker);
     saveMarkersToStorage();
@@ -282,7 +280,7 @@ function setupMapClick() {
     if (!map) return;
     map.on('click', (e) => {
         if (!isAdmin) {
-            alert('Добавление маркеров доступно только администратору. Войдите через невидимую кнопку в левом нижнем углу.');
+            alert('Добавление маркеров доступно только администратору.');
             return;
         }
         const lat = e.latlng.lat;
