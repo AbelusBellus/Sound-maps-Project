@@ -144,18 +144,9 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
 }
 
 // ==================== МАРКЕРЫ ====================
-function getMarkerIcon(phase) {
-    // Цвета маркеров больше не зависят от фазы (можно оставить единый цвет)
-    // Оставим как есть для совместимости, но можно сделать все маркеры одинаковыми.
-    // Поскольку мы не фильтруем маркеры, фаза всё ещё привязана к каждому маркеру, но цвет будет показывать его "родную" фазу.
-    // Если хотите единый цвет, замените switch на один цвет.
-    const colors = {
-        morning: '#fd981c',
-        day: '#fff0d9',
-        evening: '#c96813',
-        night: '#214364'
-    };
-    const color = colors[phase] || '#2c3e50';
+// Все маркеры одного цвета
+function getMarkerIcon() {
+    const color = '#fff0d9';
     return L.divIcon({
         html: `<div style="background: ${color}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
         iconSize: [24, 24],
@@ -172,7 +163,7 @@ function stopCurrentAudio() {
 }
 
 function addMarkerToMap(markerData) {
-    const icon = getMarkerIcon(markerData.phase);
+    const icon = getMarkerIcon();
     const marker = L.marker([markerData.lat, markerData.lng], { icon }).addTo(map);
     const popupContent = `<strong>${markerData.title || 'Без названия'}</strong><br>${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
     marker.bindPopup(popupContent);
@@ -202,7 +193,6 @@ function addMarkerToMap(markerData) {
 }
 
 function refreshMarkers() {
-    // Останавливаем звук
     stopCurrentAudio();
     
     markers.forEach(item => {
@@ -212,11 +202,10 @@ function refreshMarkers() {
     markers = [];
     if (noiseLayer) noiseLayer.clearLayers();
 
-    // Показываем ВСЕ маркеры без фильтрации по фазе
     allMarkersData.forEach(data => addMarkerToMap(data));
 }
 
-// ==================== ТОНИРОВКА ПО ВРЕМЕНИ СУТОК (АВТОМАТИЧЕСКАЯ) ====================
+// ==================== ТОНИРОВКА ПО ВРЕМЕНИ ====================
 function setTintByTime() {
     const hour = new Date().getHours();
     let phase;
@@ -225,15 +214,14 @@ function setTintByTime() {
     else if (hour >= 18 && hour < 22) phase = 'evening';
     else phase = 'night';
     
-    currentPhase = phase; // сохраняем для информации, но не используем для фильтрации
+    currentPhase = phase;
     if (mapTintDiv) mapTintDiv.style.backgroundColor = PHASE_COLORS[phase].map;
     if (globalTintDiv) globalTintDiv.style.backgroundColor = PHASE_COLORS[phase].global;
 }
 
-// Запускаем тонировку и обновляем каждый час (или каждую минуту для точности)
 function startTintUpdater() {
     setTintByTime();
-    setInterval(setTintByTime, 60000); // обновляем каждую минуту
+    setInterval(setTintByTime, 60000);
 }
 
 // ==================== АДМИНИСТРИРОВАНИЕ ====================
@@ -250,7 +238,7 @@ function renderMarkersList() {
     allMarkersData.forEach((m, idx) => {
         const div = document.createElement('div');
         div.innerHTML = `
-            <span><strong>${m.title}</strong> (${m.lat}, ${m.lng}) [${m.phase}] → ${m.soundUrl}</span>
+            <span><strong>${m.title}</strong> (${m.lat}, ${m.lng}) → ${m.soundUrl}</span>
             <button onclick="deleteMarker(${idx})">🗑️</button>
         `;
         container.appendChild(div);
@@ -267,10 +255,10 @@ window.deleteMarker = function(index) {
     }
 };
 
-function addMarker(lat, lng, title, soundUrl, phase) {
+function addMarker(lat, lng, title, soundUrl) {
     if (!isAdmin) { alert('Нет прав'); return; }
     const noiseParams = generateRandomNoiseParams();
-    const newMarker = { lat, lng, title, soundUrl, phase, noiseParams };
+    const newMarker = { lat, lng, title, soundUrl, phase: 'day', noiseParams };
     allMarkersData.push(newMarker);
     saveMarkersToStorage();
     refreshMarkers();
@@ -292,7 +280,7 @@ function setupMapClick() {
     if (!map) return;
     map.on('click', (e) => {
         if (!isAdmin) {
-            alert('Авторизуйтесь для добавления маркеров (невидимая кнопка в левом нижнем углу, пароль INFJ)');
+            alert('Добавление маркеров доступно только администратору.');
             return;
         }
         const lat = e.latlng.lat;
@@ -301,9 +289,7 @@ function setupMapClick() {
         if (!title) return;
         const soundUrl = prompt('Путь к звуку (например, Sounds/example.mp3):', 'Sounds/');
         if (!soundUrl) return;
-        let phase = prompt('Фаза (morning/day/evening/night):', currentPhase);
-        if (!['morning', 'day', 'evening', 'night'].includes(phase)) phase = currentPhase;
-        addMarker(lat, lng, title, soundUrl, phase);
+        addMarker(lat, lng, title, soundUrl);
     });
 }
 
@@ -374,8 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initNoiseLayer();
 
     globalTintDiv = document.getElementById('globalTint');
-    startTintUpdater();          // запускаем автоматическую смену тонировки
-    refreshMarkers();            // отображаем все маркеры
+    startTintUpdater();
+    refreshMarkers();
 
     const authBtn = document.getElementById('invisibleAuthBtn');
     if (authBtn) {
