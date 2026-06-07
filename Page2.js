@@ -2,10 +2,10 @@
 const ADMIN_PASSWORD = 'INFJ';
 const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
-// Границы Подольска
+// Границы Москвы
 const CITY_BOUNDS = L.latLngBounds([55.62, 37.50], [55.85, 37.82]);
 
-// Цвета для оверлеев
+// Цвета для оверлеев (тонировка в зависимости от времени суток)
 const PHASE_COLORS = {
     morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
     day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
@@ -25,14 +25,14 @@ let noiseEnabled = false;
 let noiseLayer;
 let mapTintDiv;
 let globalTintDiv;
-let currentAudio = null; // для остановки звука
+let currentAudio = null;
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
     map = L.map('map', {
         maxBounds: CITY_BOUNDS,
         maxBoundsViscosity: 1.0,
-        minZoom: 13,
+        minZoom: 11,
         maxZoom: 16
     }).setView([55.751244, 37.618423], 11);
 
@@ -76,14 +76,14 @@ function loadMarkersFromStorage() {
         });
         saveMarkersToStorage();
     } else {
-       allMarkersData = [
-    { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-    { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-    { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
-    { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'night', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
-    { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'morning', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
-    { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
-];
+        allMarkersData = [
+            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
+            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
+            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'night', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
+            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'morning', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
+            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
+        ];
         saveMarkersToStorage();
     }
 }
@@ -92,7 +92,7 @@ function saveMarkersToStorage() {
     localStorage.setItem('moscowMarkers', JSON.stringify(allMarkersData));
 }
 
-// ==================== ШУМОВЫЕ КРУГИ С АНИМАЦИЕЙ ====================
+// ==================== ШУМОВЫЕ КРУГИ ====================
 function generateRandomNoiseParams() {
     return {
         radius: Math.random() * 200 + 50,
@@ -100,7 +100,6 @@ function generateRandomNoiseParams() {
     };
 }
 
-// Функция создания круга без анимации радиуса (только CSS-пульсация)
 function createNoiseShape(markerData) {
     const params = markerData.noiseParams;
     if (!params) return null;
@@ -123,11 +122,8 @@ function animateCircleAppearance(circleObj, duration = 300) {
         let t = Math.min(1, elapsed / duration);
         const currentRadius = startRadius + (endRadius - startRadius) * t;
         circleObj.circle.setRadius(currentRadius);
-        if (t < 1) {
-            requestAnimationFrame(step);
-        } else {
-            circleObj.circle.setRadius(endRadius);
-        }
+        if (t < 1) requestAnimationFrame(step);
+        else circleObj.circle.setRadius(endRadius);
     };
     requestAnimationFrame(step);
 }
@@ -141,17 +137,18 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
         let t = Math.min(1, elapsed / duration);
         const currentRadius = startRadius + (endRadius - startRadius) * t;
         circleObj.circle.setRadius(currentRadius);
-        if (t < 1) {
-            requestAnimationFrame(step);
-        } else {
-            if (onComplete) onComplete();
-        }
+        if (t < 1) requestAnimationFrame(step);
+        else if (onComplete) onComplete();
     };
     requestAnimationFrame(step);
 }
 
 // ==================== МАРКЕРЫ ====================
 function getMarkerIcon(phase) {
+    // Цвета маркеров больше не зависят от фазы (можно оставить единый цвет)
+    // Оставим как есть для совместимости, но можно сделать все маркеры одинаковыми.
+    // Поскольку мы не фильтруем маркеры, фаза всё ещё привязана к каждому маркеру, но цвет будет показывать его "родную" фазу.
+    // Если хотите единый цвет, замените switch на один цвет.
     const colors = {
         morning: '#fd981c',
         day: '#fff0d9',
@@ -166,7 +163,6 @@ function getMarkerIcon(phase) {
     });
 }
 
-// Функция остановки звука
 function stopCurrentAudio() {
     if (currentAudio) {
         currentAudio.pause();
@@ -181,16 +177,13 @@ function addMarkerToMap(markerData) {
     const popupContent = `<strong>${markerData.title || 'Без названия'}</strong><br>${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
     marker.bindPopup(popupContent);
     
-    // Обработчик клика с остановкой предыдущего звука
     marker.on('click', () => {
-        stopCurrentAudio(); // остановить любой текущий звук
+        stopCurrentAudio();
         if (markerData.soundUrl) {
             const audio = new Audio(markerData.soundUrl);
             currentAudio = audio;
             audio.play().catch(e => console.warn(e));
-            audio.onended = () => {
-                if (currentAudio === audio) currentAudio = null;
-            };
+            audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
         } else {
             alert('Звук не задан');
         }
@@ -209,44 +202,38 @@ function addMarkerToMap(markerData) {
 }
 
 function refreshMarkers() {
-    // Останавливаем звук при смене маркеров (смена фазы)
+    // Останавливаем звук
     stopCurrentAudio();
     
     markers.forEach(item => {
         map.removeLayer(item.marker);
-        if (item.noiseShape) {
-            map.removeLayer(item.noiseShape.circle);
-        }
+        if (item.noiseShape) map.removeLayer(item.noiseShape.circle);
     });
     markers = [];
     if (noiseLayer) noiseLayer.clearLayers();
 
-    const filtered = allMarkersData.filter(m => m.phase === currentPhase);
-    filtered.forEach(data => addMarkerToMap(data));
+    // Показываем ВСЕ маркеры без фильтрации по фазе
+    allMarkersData.forEach(data => addMarkerToMap(data));
 }
 
-// ==================== ФАЗЫ ВРЕМЕНИ ====================
-function setPhase(phase) {
-    if (phase === currentPhase) return;
-    currentPhase = phase;
-
-    document.querySelectorAll('.time-btn').forEach(btn => {
-        btn.classList.remove('active-morning', 'active-day', 'active-evening', 'active-night');
-        if (btn.dataset.phase === phase) btn.classList.add(`active-${phase}`);
-    });
-
+// ==================== ТОНИРОВКА ПО ВРЕМЕНИ СУТОК (АВТОМАТИЧЕСКАЯ) ====================
+function setTintByTime() {
+    const hour = new Date().getHours();
+    let phase;
+    if (hour >= 5 && hour < 10) phase = 'morning';
+    else if (hour >= 10 && hour < 18) phase = 'day';
+    else if (hour >= 18 && hour < 22) phase = 'evening';
+    else phase = 'night';
+    
+    currentPhase = phase; // сохраняем для информации, но не используем для фильтрации
     if (mapTintDiv) mapTintDiv.style.backgroundColor = PHASE_COLORS[phase].map;
     if (globalTintDiv) globalTintDiv.style.backgroundColor = PHASE_COLORS[phase].global;
-
-    refreshMarkers();
 }
 
-function detectPhaseByTime() {
-    const hour = new Date().getHours();
-    if (hour >= 5 && hour < 10) return 'morning';
-    if (hour >= 10 && hour < 18) return 'day';
-    if (hour >= 18 && hour < 22) return 'evening';
-    return 'night';
+// Запускаем тонировку и обновляем каждый час (или каждую минуту для точности)
+function startTintUpdater() {
+    setTintByTime();
+    setInterval(setTintByTime, 60000); // обновляем каждую минуту
 }
 
 // ==================== АДМИНИСТРИРОВАНИЕ ====================
@@ -305,7 +292,7 @@ function setupMapClick() {
     if (!map) return;
     map.on('click', (e) => {
         if (!isAdmin) {
-            alert('Авторизуйтесь для добавления маркеров');
+            alert('Авторизуйтесь для добавления маркеров (невидимая кнопка в левом нижнем углу, пароль INFJ)');
             return;
         }
         const lat = e.latlng.lat;
@@ -322,7 +309,7 @@ function setupMapClick() {
 
 // ==================== АВТОРИЗАЦИЯ ====================
 function checkAuth() {
-    const storedHash = sessionStorage.getItem('adminHashPodolsk');
+    const storedHash = sessionStorage.getItem('adminHashMoscow');
     if (storedHash && storedHash === ADMIN_PASSWORD_HASH) {
         isAdmin = true;
         showAdminPanel(true);
@@ -336,7 +323,7 @@ function login() {
     if (!pwd) return;
     const hash = CryptoJS.MD5(pwd).toString();
     if (hash === ADMIN_PASSWORD_HASH) {
-        sessionStorage.setItem('adminHashPodolsk', hash);
+        sessionStorage.setItem('adminHashMoscow', hash);
         isAdmin = true;
         showAdminPanel(true);
         alert('Добро пожаловать, администратор!');
@@ -346,7 +333,7 @@ function login() {
 }
 
 function logout() {
-    sessionStorage.removeItem('adminHashPodolsk');
+    sessionStorage.removeItem('adminHashMoscow');
     isAdmin = false;
     showAdminPanel(false);
     alert('Вы вышли');
@@ -361,7 +348,6 @@ function toggleNoiseMap() {
     noiseEnabled = !noiseEnabled;
     const btn = document.getElementById('noiseMapBtn');
     btn.classList.toggle('active');
-
     if (noiseEnabled) {
         markers.forEach(item => {
             if (!item.noiseShape) {
@@ -380,7 +366,6 @@ function toggleNoiseMap() {
     }
 }
 
-
 // ==================== ЗАПУСК ====================
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
@@ -389,14 +374,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initNoiseLayer();
 
     globalTintDiv = document.getElementById('globalTint');
-    const initialPhase = detectPhaseByTime();
-    setPhase(initialPhase);
-
-    document.querySelectorAll('.time-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            setPhase(e.currentTarget.dataset.phase);
-        });
-    });
+    startTintUpdater();          // запускаем автоматическую смену тонировки
+    refreshMarkers();            // отображаем все маркеры
 
     const authBtn = document.getElementById('invisibleAuthBtn');
     if (authBtn) {
