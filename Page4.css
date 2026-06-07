@@ -305,4 +305,21 @@ body {
     #map-tint, .global-tint {
         z-index: 10;
     }
+    /* Гарантируем, что иконка маркера будет видима */
+.leaflet-div-icon {
+    background: transparent !important;
+    border: none !important;
+}
+.custom-marker-icon {
+    background: transparent !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+.custom-marker-icon div {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    border: 2px solid white !important;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
+}
 }
