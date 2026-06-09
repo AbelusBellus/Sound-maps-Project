@@ -5,7 +5,7 @@ const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 // Границы Москвы
 const CITY_BOUNDS = L.latLngBounds([55.62, 37.50], [55.85, 37.82]);
 
-// Цвета для оверлеев (тонировка в зависимости от времени суток)
+// Цвета для оверлеев (тонировка по времени)
 const PHASE_COLORS = {
     morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
     day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
@@ -26,6 +26,13 @@ let noiseLayer;
 let mapTintDiv;
 let globalTintDiv;
 let currentAudio = null;
+
+// Элементы информационной панели
+const infoPanel = document.getElementById('infoPanel');
+const coordinateSpan = document.getElementById('coordinateValue');
+const locationSpan = document.getElementById('locationValue');
+const timeSlider = document.getElementById('timeSlider');
+const volumeSlider = document.getElementById('volumeSlider');
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
@@ -79,10 +86,10 @@ function loadMarkersFromStorage() {
         allMarkersData = [
             { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
             { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
-            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'night', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
-            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'morning', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
-            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'evening', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
+            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
+            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
+            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
+            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
@@ -143,8 +150,7 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
     requestAnimationFrame(step);
 }
 
-// ==================== МАРКЕРЫ ====================
-// Все маркеры одного цвета
+// ==================== МАРКЕРЫ (единый цвет) ====================
 function getMarkerIcon() {
     const color = '#fff0d9';
     return L.divIcon({
@@ -162,19 +168,53 @@ function stopCurrentAudio() {
     }
 }
 
+// ==================== ФУНКЦИИ ДЛЯ ПАНЕЛИ ПЛЕЕРА ====================
+function updateInfoPanel(markerData) {
+    coordinateSpan.textContent = `${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
+    locationSpan.textContent = markerData.title || 'Без названия';
+    infoPanel.style.display = 'block';
+}
+
+function syncTimeSlider() {
+    if (currentAudio && !isNaN(currentAudio.duration) && isFinite(currentAudio.duration)) {
+        const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
+        timeSlider.value = percent;
+    }
+}
+
+function syncVolumeSlider() {
+    if (currentAudio) {
+        volumeSlider.value = currentAudio.volume;
+    }
+}
+
+function bindAudioEvents(audio) {
+    audio.addEventListener('timeupdate', syncTimeSlider);
+    audio.addEventListener('ended', () => {
+        timeSlider.value = 0;
+    });
+    audio.volume = parseFloat(volumeSlider.value);
+}
+
+// ==================== ДОБАВЛЕНИЕ МАРКЕРА НА КАРТУ ====================
 function addMarkerToMap(markerData) {
     const icon = getMarkerIcon();
     const marker = L.marker([markerData.lat, markerData.lng], { icon }).addTo(map);
     const popupContent = `<strong>${markerData.title || 'Без названия'}</strong><br>${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
     marker.bindPopup(popupContent);
-    
+
     marker.on('click', () => {
         stopCurrentAudio();
         if (markerData.soundUrl) {
             const audio = new Audio(markerData.soundUrl);
             currentAudio = audio;
+            bindAudioEvents(audio);
+            updateInfoPanel(markerData);
             audio.play().catch(e => console.warn(e));
-            audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
+            audio.onended = () => {
+                if (currentAudio === audio) currentAudio = null;
+                timeSlider.value = 0;
+            };
         } else {
             alert('Звук не задан');
         }
@@ -194,7 +234,8 @@ function addMarkerToMap(markerData) {
 
 function refreshMarkers() {
     stopCurrentAudio();
-    
+    if (infoPanel) infoPanel.style.display = 'none'; // скрываем панель при смене фазы
+
     markers.forEach(item => {
         map.removeLayer(item.marker);
         if (item.noiseShape) map.removeLayer(item.noiseShape.circle);
@@ -350,6 +391,23 @@ function toggleNoiseMap() {
         noiseLayer.clearLayers();
         markers.forEach(item => { if (item.noiseShape) item.noiseShape = null; });
     }
+}
+
+// ==================== ОБРАБОТЧИКИ ПЛЕЕРА ====================
+if (timeSlider) {
+    timeSlider.addEventListener('input', (e) => {
+        if (currentAudio && !isNaN(currentAudio.duration)) {
+            const seekTime = (e.target.value / 100) * currentAudio.duration;
+            currentAudio.currentTime = seekTime;
+        }
+    });
+}
+if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+        if (currentAudio) {
+            currentAudio.volume = parseFloat(e.target.value);
+        }
+    });
 }
 
 // ==================== ЗАПУСК ====================

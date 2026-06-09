@@ -31,6 +31,28 @@
         <div id="map"></div>
     </div>
 
+    <!-- Информационная панель под картой -->
+<div id="infoPanel" class="info-panel" style="display: none;">
+    <!-- Горизонтальный контейнер для времени (прямоугольник) -->
+    <div class="time-container">
+        <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0" step="0.01">
+    </div>
+    <!-- Текст "the coordinate" и значение координат -->
+    <div class="coordinate-row">
+        <span class="label">the coordinate</span>
+        <span class="coordinate-value" id="coordinateValue">0, 0</span>
+    </div>
+    <!-- Текст "location" и название маркера -->
+    <div class="location-row">
+        <span class="label">location</span>
+        <span class="location-value" id="locationValue">—</span>
+    </div>
+    <!-- Вертикальный регулятор громкости -->
+    <div class="volume-wrapper">
+        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
+    </div>
+</div>
+
     <div id="invisibleAuthBtn"></div>
 
     <div id="adminPanel" class="admin-panel" style="display: none;">

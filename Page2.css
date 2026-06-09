@@ -21,6 +21,7 @@ body {
     overflow: hidden;
 }
 
+/* Десктопные фоны */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -79,6 +80,7 @@ body {
     cursor: pointer;
 }
 
+/* Кнопка Noise map */
 .noise-map-btn {
     position: absolute;
     top: 14.07vh;
@@ -110,6 +112,7 @@ body {
     white-space: nowrap;
 }
 
+/* Контейнер карты */
 #mapContainer {
     position: absolute;
     top: 11.13vh;
@@ -127,6 +130,133 @@ body {
     height: 100%;
 }
 
+/* Информационная панель под картой (изначально скрыта) */
+.info-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 34.51px;
+    right: 34.51px;
+    background: #FAF8F3;
+    border: 0.8px solid #000000;
+    border-top: none;
+    border-left: none;
+    border-right: 0.8px solid #000000;
+    border-bottom: none;
+    border-style: dashed;
+    padding: 12px;
+    z-index: 30;
+    box-sizing: border-box;
+    font-family: 'IBM Plex Mono', monospace;
+}
+.time-container {
+    height: 26.38px;
+    margin-bottom: 25px;
+    position: relative;
+}
+.time-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.time-slider:focus { outline: none; }
+.time-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    border-top: 1px dashed #000;
+    border-right: 1px dashed #000;
+    border-left: none;
+    border-bottom: none;
+}
+.time-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26.38px;
+    height: 26.38px;
+    border-radius: 50%;
+    background: #000000;
+    border: 0.8px solid #000;
+    cursor: pointer;
+    margin-top: -12px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+}
+.coordinate-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 25px;
+    font-size: 5.79px;
+    font-weight: 400;
+    line-height: 1;
+    color: #000;
+}
+.label {
+    width: 49px;
+    text-transform: lowercase;
+    font-size: 5.79px;
+}
+.coordinate-value {
+    margin-left: auto;
+    font-size: 11.86px;
+    text-align: right;
+    font-weight: 400;
+}
+.location-row {
+    display: flex;
+    align-items: baseline;
+    font-size: 5.79px;
+    font-weight: 400;
+}
+.location-value {
+    margin-left: auto;
+    font-size: 11.86px;
+    text-align: right;
+    max-width: 142px;
+    word-break: break-word;
+}
+.volume-wrapper {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 112.8px;
+    margin-top: -10px;
+}
+.volume-slider {
+    width: 112.8px;
+    height: 30px;
+    transform: rotate(-90deg) translateX(-56.4px) translateY(-56.4px);
+    transform-origin: top left;
+    -webkit-appearance: none;
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.volume-slider:focus { outline: none; }
+.volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    border-top: 1px dashed #000;
+    border-right: 1px dashed #000;
+    border-left: none;
+    border-bottom: none;
+}
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000;
+    border: 0.8px solid #000;
+    cursor: pointer;
+    margin-top: -9px;
+}
+
+/* Невидимая кнопка авторизации */
 #invisibleAuthBtn {
     position: absolute;
     bottom: 20px;
@@ -138,6 +268,7 @@ body {
     background: transparent;
 }
 
+/* Админ-панель */
 .admin-panel {
     position: absolute;
     bottom: 20px;
@@ -176,6 +307,7 @@ body {
     font-size: 10px;
 }
 
+/* Глобальная тонировка */
 .global-tint {
     position: absolute;
     top: 0;
@@ -199,6 +331,7 @@ body {
 #map-tint { pointer-events: none; }
 .global-tint { pointer-events: none; }
 
+/* Шумовые круги */
 .noise-circle {
     animation: pulse 2s infinite ease-in-out;
     transform-origin: center;
@@ -285,6 +418,12 @@ body {
         border: 0.37px solid #000000;
         z-index: 5;
     }
+    .info-panel {
+        top: auto;
+        bottom: 20px;
+        left: 34.51px;
+        right: 34.51px;
+    }
     #invisibleAuthBtn {
         bottom: 10px;
         left: 10px;
@@ -305,21 +444,4 @@ body {
     #map-tint, .global-tint {
         z-index: 10;
     }
-    /* Гарантируем, что иконка маркера будет видима */
-.leaflet-div-icon {
-    background: transparent !important;
-    border: none !important;
-}
-.custom-marker-icon {
-    background: transparent !important;
-    width: 24px !important;
-    height: 24px !important;
-}
-.custom-marker-icon div {
-    width: 24px !important;
-    height: 24px !important;
-    border-radius: 50% !important;
-    border: 2px solid white !important;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
-}
 }
