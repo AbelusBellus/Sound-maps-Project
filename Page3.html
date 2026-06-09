@@ -13,48 +13,52 @@
 </head>
 <body>
 <div class="page">
+    <!-- Десктопный фон -->
     <img src="Images/BG1-1.png" class="bg bg-1 desktop-bg" alt="">
+    <!-- Мобильный фон -->
     <img src="Images/BG2-1.png" class="bg-mobile bg2-1" alt="">
 
+    <!-- Векторная стрелка -->
     <img src="Images/Vector1.png" class="vector" alt="">
 
+    <!-- Верхняя строка -->
     <div class="title">sound maps</div>
     <div class="page-number">page 3</div>
     <div class="city-name">Podolsk</div>
 
+    <!-- Кнопка Noise map -->
     <div class="noise-map-btn" id="noiseMapBtn">
         <div class="checkbox"></div>
         <span class="btn-text">Noise map</span>
     </div>
 
+    <!-- Контейнер карты -->
     <div id="mapContainer">
         <div id="map"></div>
     </div>
 
-    <!-- Информационная панель под картой -->
-<div id="infoPanel" class="info-panel" style="display: none;">
-    <!-- Горизонтальный контейнер для времени (прямоугольник) -->
-    <div class="time-container">
-        <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0" step="0.01">
+    <!-- Информационная панель под картой (появляется при клике на маркер) -->
+    <div id="infoPanel" class="info-panel" style="display: none;">
+        <div class="time-container">
+            <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0" step="0.01">
+        </div>
+        <div class="coordinate-row">
+            <span class="label">the coordinate</span>
+            <span class="coordinate-value" id="coordinateValue">0, 0</span>
+        </div>
+        <div class="location-row">
+            <span class="label">location</span>
+            <span class="location-value" id="locationValue">—</span>
+        </div>
+        <div class="volume-wrapper">
+            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
+        </div>
     </div>
-    <!-- Текст "the coordinate" и значение координат -->
-    <div class="coordinate-row">
-        <span class="label">the coordinate</span>
-        <span class="coordinate-value" id="coordinateValue">0, 0</span>
-    </div>
-    <!-- Текст "location" и название маркера -->
-    <div class="location-row">
-        <span class="label">location</span>
-        <span class="location-value" id="locationValue">—</span>
-    </div>
-    <!-- Вертикальный регулятор громкости -->
-    <div class="volume-wrapper">
-        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
-    </div>
-</div>
 
+    <!-- Невидимая кнопка авторизации -->
     <div id="invisibleAuthBtn"></div>
 
+    <!-- Админ-панель -->
     <div id="adminPanel" class="admin-panel" style="display: none;">
         <h3>Управление маркерами (Подольск)</h3>
         <div class="admin-form">
@@ -63,6 +67,7 @@
         <div id="markersList"></div>
     </div>
 
+    <!-- Глобальная тонировка -->
     <div id="globalTint" class="global-tint"></div>
 </div>
 
