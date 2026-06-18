@@ -21,7 +21,6 @@ body {
     overflow: hidden;
 }
 
-/* Десктопные фоны */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -80,7 +79,6 @@ body {
     cursor: pointer;
 }
 
-/* Кнопка Noise map */
 .noise-map-btn {
     position: absolute;
     top: 14.07vh;
@@ -112,7 +110,6 @@ body {
     white-space: nowrap;
 }
 
-/* Контейнер карты */
 #mapContainer {
     position: absolute;
     top: 11.13vh;
@@ -130,7 +127,7 @@ body {
     height: 100%;
 }
 
-/* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ (ПЛЕЕР) ===== */
+/* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ ===== */
 .info-panel {
     position: absolute;
     bottom: 20px;
@@ -150,7 +147,7 @@ body {
     overflow: visible;
 }
 
-/* === Слайдер времени (горизонтальный) === */
+/* === Слайдер времени === */
 .time-slider-wrapper {
     position: absolute;
     top: 0;
@@ -193,7 +190,7 @@ body {
     pointer-events: auto;
 }
 
-/* === Текстовые строки === */
+/* === Текстовые строки (увеличенный шрифт) === */
 .coordinate-row {
     position: absolute;
     top: 40px;
@@ -201,71 +198,69 @@ body {
     right: 30px;
     display: flex;
     align-items: baseline;
-    font-size: 5.79px;
+    font-size: 11.58px;   /* было 5.79px */
     font-weight: 400;
     color: #000;
     padding: 0 12px;
 }
 .label {
-    width: 49px;
+    width: 98px;          /* было 49px, теперь в 2 раза */
     text-transform: lowercase;
-    font-size: 5.79px;
+    font-size: 11.58px;
 }
 .coordinate-value {
     margin-left: auto;
-    font-size: 11.86px;
+    font-size: 23.72px;   /* было 11.86px */
     text-align: right;
     font-weight: 400;
 }
 
 .location-row {
     position: absolute;
-    top: 65px;
+    top: 70px;            /* поднято, чтобы поместить увеличенный шрифт */
     left: 0;
     right: 30px;
     display: flex;
     align-items: baseline;
-    font-size: 5.79px;
+    font-size: 11.58px;
     font-weight: 400;
     padding: 0 12px;
 }
 .location-value {
     margin-left: auto;
-    font-size: 11.86px;
+    font-size: 23.72px;
     text-align: right;
     max-width: 142px;
     word-break: break-word;
 }
 
-/* === Кнопки Play / Pause === */
+/* === Кнопка Play/Pause (одна) === */
 .playback-controls {
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 20px;
     z-index: 31;
 }
-.play-btn, .pause-btn {
+.play-pause-btn {
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
     color: #000;
     padding: 0;
     line-height: 1;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.play-btn:hover, .pause-btn:hover {
+.play-pause-btn:hover {
     opacity: 0.7;
 }
 
-/* === Слайдер громкости (вертикальный) === */
+/* === Слайдер громкости === */
 .volume-slider-wrapper {
     position: absolute;
     top: 0;
@@ -481,9 +476,27 @@ body {
         bottom: 10px;
         height: 140px;
     }
-    .coordinate-row { top: 35px; }
-    .location-row { top: 60px; }
+    .coordinate-row {
+        top: 35px;
+        font-size: 10px;
+    }
+    .label {
+        width: 80px;
+        font-size: 10px;
+    }
+    .coordinate-value {
+        font-size: 18px;
+    }
+    .location-row {
+        top: 60px;
+        font-size: 10px;
+    }
+    .location-value {
+        font-size: 18px;
+        max-width: 110px;
+    }
     .playback-controls { bottom: 8px; }
+    .play-pause-btn { font-size: 20px; width: 34px; height: 34px; }
     .volume-slider-wrapper { width: 25px; }
     .volume-slider {
         width: 140px;

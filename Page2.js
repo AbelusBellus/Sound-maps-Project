@@ -2,10 +2,8 @@
 const ADMIN_PASSWORD = 'INFJ';
 const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
-// Границы Москвы
 const CITY_BOUNDS = L.latLngBounds([55.62, 37.50], [55.85, 37.82]);
 
-// Цвета для оверлеев (тонировка по времени)
 const PHASE_COLORS = {
     morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
     day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
@@ -26,15 +24,15 @@ let noiseLayer;
 let mapTintDiv;
 let globalTintDiv;
 let currentAudio = null;
+let isPlaying = false; // состояние кнопки
 
-// Элементы информационной панели
+// Элементы панели
 const infoPanel = document.getElementById('infoPanel');
 const coordinateSpan = document.getElementById('coordinateValue');
 const locationSpan = document.getElementById('locationValue');
 const timeSlider = document.getElementById('timeSlider');
 const volumeSlider = document.getElementById('volumeSlider');
-const playBtn = document.getElementById('playBtn');
-const pauseBtn = document.getElementById('pauseBtn');
+const playPauseBtn = document.getElementById('playPauseBtn');
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
@@ -152,7 +150,7 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
     requestAnimationFrame(step);
 }
 
-// ==================== МАРКЕРЫ (единый цвет) ====================
+// ==================== МАРКЕРЫ ====================
 function getMarkerIcon() {
     const color = '#fff0d9';
     return L.divIcon({
@@ -167,6 +165,8 @@ function stopCurrentAudio() {
         currentAudio.pause();
         currentAudio.currentTime = 0;
         currentAudio = null;
+        isPlaying = false;
+        if (playPauseBtn) playPauseBtn.textContent = '▶';
     }
 }
 
@@ -194,11 +194,13 @@ function bindAudioEvents(audio) {
     audio.addEventListener('timeupdate', syncTimeSlider);
     audio.addEventListener('ended', () => {
         timeSlider.value = 0;
+        if (playPauseBtn) playPauseBtn.textContent = '▶';
+        isPlaying = false;
     });
     audio.volume = parseFloat(volumeSlider.value);
 }
 
-// ==================== ДОБАВЛЕНИЕ МАРКЕРА НА КАРТУ ====================
+// ==================== ДОБАВЛЕНИЕ МАРКЕРА ====================
 function addMarkerToMap(markerData) {
     const icon = getMarkerIcon();
     const marker = L.marker([markerData.lat, markerData.lng], { icon }).addTo(map);
@@ -212,10 +214,17 @@ function addMarkerToMap(markerData) {
             currentAudio = audio;
             bindAudioEvents(audio);
             updateInfoPanel(markerData);
-            audio.play().catch(e => console.warn(e));
+            audio.play().then(() => {
+                isPlaying = true;
+                if (playPauseBtn) playPauseBtn.textContent = '⏸';
+            }).catch(e => console.warn(e));
             audio.onended = () => {
-                if (currentAudio === audio) currentAudio = null;
-                timeSlider.value = 0;
+                if (currentAudio === audio) {
+                    currentAudio = null;
+                    isPlaying = false;
+                    if (playPauseBtn) playPauseBtn.textContent = '▶';
+                    timeSlider.value = 0;
+                }
             };
         } else {
             alert('Звук не задан');
@@ -248,7 +257,7 @@ function refreshMarkers() {
     allMarkersData.forEach(data => addMarkerToMap(data));
 }
 
-// ==================== ТОНИРОВКА ПО ВРЕМЕНИ ====================
+// ==================== ТОНИРОВКА ====================
 function setTintByTime() {
     const hour = new Date().getHours();
     let phase;
@@ -411,17 +420,18 @@ if (volumeSlider) {
         }
     });
 }
-if (playBtn) {
-    playBtn.addEventListener('click', () => {
+if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', () => {
         if (currentAudio) {
-            currentAudio.play().catch(e => console.warn(e));
-        }
-    });
-}
-if (pauseBtn) {
-    pauseBtn.addEventListener('click', () => {
-        if (currentAudio) {
-            currentAudio.pause();
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+            } else {
+                currentAudio.play().catch(e => console.warn(e));
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+            }
         }
     });
 }
