@@ -33,6 +33,8 @@ const coordinateSpan = document.getElementById('coordinateValue');
 const locationSpan = document.getElementById('locationValue');
 const timeSlider = document.getElementById('timeSlider');
 const volumeSlider = document.getElementById('volumeSlider');
+const playBtn = document.getElementById('playBtn');
+const pauseBtn = document.getElementById('pauseBtn');
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
@@ -234,7 +236,7 @@ function addMarkerToMap(markerData) {
 
 function refreshMarkers() {
     stopCurrentAudio();
-    if (infoPanel) infoPanel.style.display = 'none'; // скрываем панель при смене фазы
+    if (infoPanel) infoPanel.style.display = 'none';
 
     markers.forEach(item => {
         map.removeLayer(item.marker);
@@ -406,6 +408,20 @@ if (volumeSlider) {
     volumeSlider.addEventListener('input', (e) => {
         if (currentAudio) {
             currentAudio.volume = parseFloat(e.target.value);
+        }
+    });
+}
+if (playBtn) {
+    playBtn.addEventListener('click', () => {
+        if (currentAudio) {
+            currentAudio.play().catch(e => console.warn(e));
+        }
+    });
+}
+if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => {
+        if (currentAudio) {
+            currentAudio.pause();
         }
     });
 }

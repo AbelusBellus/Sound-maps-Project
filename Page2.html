@@ -13,9 +13,8 @@
 </head>
 <body>
 <div class="page">
-    <!-- Десктопный фон -->
+    <!-- Фоны -->
     <img src="Images/BG1-1.png" class="bg bg-1 desktop-bg" alt="">
-    <!-- Мобильный фон -->
     <img src="Images/BG2-1.png" class="bg-mobile bg2-1" alt="">
 
     <!-- Векторная стрелка -->
@@ -37,20 +36,29 @@
         <div id="map"></div>
     </div>
 
-    <!-- Информационная панель под картой (появляется при клике на маркер) -->
+    <!-- Информационная панель (плеер) -->
     <div id="infoPanel" class="info-panel" style="display: none;">
-        <div class="time-container">
+        <!-- Слайдер времени (горизонтальный) на верхней границе -->
+        <div class="time-slider-wrapper">
             <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0" step="0.01">
         </div>
+        <!-- Строка координат -->
         <div class="coordinate-row">
             <span class="label">the coordinate</span>
             <span class="coordinate-value" id="coordinateValue">0, 0</span>
         </div>
+        <!-- Строка локации -->
         <div class="location-row">
             <span class="label">location</span>
             <span class="location-value" id="locationValue">—</span>
         </div>
-        <div class="volume-wrapper">
+        <!-- Кнопки Play / Pause -->
+        <div class="playback-controls">
+            <button id="playBtn" class="play-btn">▶</button>
+            <button id="pauseBtn" class="pause-btn">⏸</button>
+        </div>
+        <!-- Слайдер громкости (вертикальный) на правой границе -->
+        <div class="volume-slider-wrapper">
             <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.8">
         </div>
     </div>

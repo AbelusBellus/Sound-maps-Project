@@ -130,36 +130,45 @@ body {
     height: 100%;
 }
 
-/* Информационная панель под картой (изначально скрыта) */
+/* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ (ПЛЕЕР) ===== */
 .info-panel {
     position: absolute;
     bottom: 20px;
     left: 34.51px;
     right: 34.51px;
+    height: 130px;
     background: #FAF8F3;
     border: 0.8px solid #000000;
-    border-top: none;
+    border-top: 0.8px dashed #000;
+    border-right: 0.8px dashed #000;
     border-left: none;
-    border-right: 0.8px solid #000000;
     border-bottom: none;
-    border-style: dashed;
-    padding: 12px;
-    z-index: 30;
     box-sizing: border-box;
+    z-index: 30;
     font-family: 'IBM Plex Mono', monospace;
+    padding: 0;
+    overflow: visible;
 }
-.time-container {
-    height: 26.38px;
-    margin-bottom: 25px;
-    position: relative;
-}
-.time-slider {
-    width: 100%;
-    -webkit-appearance: none;
-    background: transparent;
+
+/* === Слайдер времени (горизонтальный) === */
+.time-slider-wrapper {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    height: 26.38px;
+    pointer-events: none;
+}
+.time-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 26.38px;
+    -webkit-appearance: none;
+    background: transparent;
+    pointer-events: auto;
+    margin: 0;
 }
 .time-slider:focus { outline: none; }
 .time-slider::-webkit-slider-runnable-track {
@@ -176,20 +185,26 @@ body {
     width: 26.38px;
     height: 26.38px;
     border-radius: 50%;
-    background: #000000;
+    background: #000;
     border: 0.8px solid #000;
     cursor: pointer;
     margin-top: -12px;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    pointer-events: auto;
 }
+
+/* === Текстовые строки === */
 .coordinate-row {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 30px;
     display: flex;
     align-items: baseline;
-    margin-bottom: 25px;
     font-size: 5.79px;
     font-weight: 400;
-    line-height: 1;
     color: #000;
+    padding: 0 12px;
 }
 .label {
     width: 49px;
@@ -202,11 +217,17 @@ body {
     text-align: right;
     font-weight: 400;
 }
+
 .location-row {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    right: 30px;
     display: flex;
     align-items: baseline;
     font-size: 5.79px;
     font-weight: 400;
+    padding: 0 12px;
 }
 .location-value {
     margin-left: auto;
@@ -215,23 +236,58 @@ body {
     max-width: 142px;
     word-break: break-word;
 }
-.volume-wrapper {
+
+/* === Кнопки Play / Pause === */
+.playback-controls {
     position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 31;
+}
+.play-btn, .pause-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #000;
+    padding: 0;
+    line-height: 1;
     width: 30px;
-    height: 112.8px;
-    margin-top: -10px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.play-btn:hover, .pause-btn:hover {
+    opacity: 0.7;
+}
+
+/* === Слайдер громкости (вертикальный) === */
+.volume-slider-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30px;
+    pointer-events: none;
 }
 .volume-slider {
-    width: 112.8px;
-    height: 30px;
-    transform: rotate(-90deg) translateX(-56.4px) translateY(-56.4px);
-    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     -webkit-appearance: none;
     background: transparent;
-    position: absolute;
+    pointer-events: auto;
+    margin: 0;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: top left;
+    width: 130px;
+    height: 30px;
     top: 0;
     left: 0;
 }
@@ -254,9 +310,10 @@ body {
     border: 0.8px solid #000;
     cursor: pointer;
     margin-top: -9px;
+    pointer-events: auto;
 }
 
-/* Невидимая кнопка авторизации */
+/* ===== Невидимая кнопка авторизации ===== */
 #invisibleAuthBtn {
     position: absolute;
     bottom: 20px;
@@ -268,7 +325,7 @@ body {
     background: transparent;
 }
 
-/* Админ-панель */
+/* ===== Админ-панель ===== */
 .admin-panel {
     position: absolute;
     bottom: 20px;
@@ -307,7 +364,7 @@ body {
     font-size: 10px;
 }
 
-/* Глобальная тонировка */
+/* ===== Глобальная тонировка ===== */
 .global-tint {
     position: absolute;
     top: 0;
@@ -331,7 +388,7 @@ body {
 #map-tint { pointer-events: none; }
 .global-tint { pointer-events: none; }
 
-/* Шумовые круги */
+/* ===== Шумовые круги ===== */
 .noise-circle {
     animation: pulse 2s infinite ease-in-out;
     transform-origin: center;
@@ -419,10 +476,18 @@ body {
         z-index: 5;
     }
     .info-panel {
-        top: auto;
-        bottom: 20px;
-        left: 34.51px;
-        right: 34.51px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 140px;
+    }
+    .coordinate-row { top: 35px; }
+    .location-row { top: 60px; }
+    .playback-controls { bottom: 8px; }
+    .volume-slider-wrapper { width: 25px; }
+    .volume-slider {
+        width: 140px;
+        height: 25px;
     }
     #invisibleAuthBtn {
         bottom: 10px;
