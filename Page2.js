@@ -26,12 +26,8 @@ let globalTintDiv;
 let currentAudio = null;
 let isPlaying = false;
 
-const infoPanel = document.getElementById('infoPanel');
-const coordinateSpan = document.getElementById('coordinateValue');
-const locationSpan = document.getElementById('locationValue');
-const timeSlider = document.getElementById('timeSlider');
-const volumeSlider = document.getElementById('volumeSlider');
-const playPauseBtn = document.getElementById('playPauseBtn');
+// Получаем элементы плеера (будут определены после загрузки DOM)
+let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
@@ -166,25 +162,27 @@ function stopCurrentAudio() {
         currentAudio = null;
         isPlaying = false;
         if (playPauseBtn) playPauseBtn.textContent = '▶';
+        if (timeSlider) timeSlider.value = 0;
     }
 }
 
 // ==================== ФУНКЦИИ ДЛЯ ПАНЕЛИ ПЛЕЕРА ====================
 function updateInfoPanel(markerData) {
+    if (!coordinateSpan || !locationSpan) return;
     coordinateSpan.textContent = `${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
     locationSpan.textContent = markerData.title || 'Без названия';
-    infoPanel.style.display = 'block';
+    if (infoPanel) infoPanel.style.display = 'block';
 }
 
 function syncTimeSlider() {
     if (currentAudio && !isNaN(currentAudio.duration) && isFinite(currentAudio.duration)) {
         const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
-        timeSlider.value = percent;
+        if (timeSlider) timeSlider.value = percent;
     }
 }
 
 function syncVolumeSlider() {
-    if (currentAudio) {
+    if (currentAudio && volumeSlider) {
         volumeSlider.value = currentAudio.volume;
     }
 }
@@ -192,11 +190,15 @@ function syncVolumeSlider() {
 function bindAudioEvents(audio) {
     audio.addEventListener('timeupdate', syncTimeSlider);
     audio.addEventListener('ended', () => {
-        timeSlider.value = 0;
+        if (timeSlider) timeSlider.value = 0;
         if (playPauseBtn) playPauseBtn.textContent = '▶';
         isPlaying = false;
+        currentAudio = null;
     });
-    audio.volume = parseFloat(volumeSlider.value);
+    // Устанавливаем громкость из слайдера
+    if (volumeSlider) {
+        audio.volume = parseFloat(volumeSlider.value);
+    }
 }
 
 // ==================== ДОБАВЛЕНИЕ МАРКЕРА ====================
@@ -216,15 +218,7 @@ function addMarkerToMap(markerData) {
             audio.play().then(() => {
                 isPlaying = true;
                 if (playPauseBtn) playPauseBtn.textContent = '⏸';
-            }).catch(e => console.warn(e));
-            audio.onended = () => {
-                if (currentAudio === audio) {
-                    currentAudio = null;
-                    isPlaying = false;
-                    if (playPauseBtn) playPauseBtn.textContent = '▶';
-                    timeSlider.value = 0;
-                }
-            };
+            }).catch(e => console.warn('Play error:', e));
         } else {
             alert('Звук не задан');
         }
@@ -404,39 +398,49 @@ function toggleNoiseMap() {
 }
 
 // ==================== ОБРАБОТЧИКИ ПЛЕЕРА ====================
-if (timeSlider) {
-    timeSlider.addEventListener('input', (e) => {
-        if (currentAudio && !isNaN(currentAudio.duration)) {
-            const seekTime = (e.target.value / 100) * currentAudio.duration;
-            currentAudio.currentTime = seekTime;
-        }
-    });
-}
-if (volumeSlider) {
-    volumeSlider.addEventListener('input', (e) => {
-        if (currentAudio) {
-            currentAudio.volume = parseFloat(e.target.value);
-        }
-    });
-}
-if (playPauseBtn) {
-    playPauseBtn.addEventListener('click', () => {
-        if (currentAudio) {
-            if (isPlaying) {
-                currentAudio.pause();
-                isPlaying = false;
-                playPauseBtn.textContent = '▶';
-            } else {
-                currentAudio.play().catch(e => console.warn(e));
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
+function initPlayerControls() {
+    infoPanel = document.getElementById('infoPanel');
+    coordinateSpan = document.getElementById('coordinateValue');
+    locationSpan = document.getElementById('locationValue');
+    timeSlider = document.getElementById('timeSlider');
+    volumeSlider = document.getElementById('volumeSlider');
+    playPauseBtn = document.getElementById('playPauseBtn');
+
+    if (timeSlider) {
+        timeSlider.addEventListener('input', (e) => {
+            if (currentAudio && !isNaN(currentAudio.duration)) {
+                const seekTime = (e.target.value / 100) * currentAudio.duration;
+                currentAudio.currentTime = seekTime;
             }
-        }
-    });
+        });
+    }
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', (e) => {
+            if (currentAudio) {
+                currentAudio.volume = parseFloat(e.target.value);
+            }
+        });
+    }
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', () => {
+            if (currentAudio) {
+                if (isPlaying) {
+                    currentAudio.pause();
+                    isPlaying = false;
+                    playPauseBtn.textContent = '▶';
+                } else {
+                    currentAudio.play().catch(e => console.warn(e));
+                    isPlaying = true;
+                    playPauseBtn.textContent = '⏸';
+                }
+            }
+        });
+    }
 }
 
 // ==================== ЗАПУСК ====================
 document.addEventListener('DOMContentLoaded', () => {
+    initPlayerControls(); // сначала инициализируем элементы управления
     initMap();
     loadMarkersFromStorage();
     checkAuth();
