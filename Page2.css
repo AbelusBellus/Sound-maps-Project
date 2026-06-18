@@ -190,7 +190,7 @@ body {
     pointer-events: auto;
 }
 
-/* === Текстовые строки (увеличенный шрифт) === */
+/* === Текстовые строки (увеличен только .label) === */
 .coordinate-row {
     position: absolute;
     top: 40px;
@@ -198,7 +198,7 @@ body {
     right: 30px;
     display: flex;
     align-items: baseline;
-    font-size: 11.58px;   /* было 5.79px */
+    font-size: 11.58px;   /* увеличен базовый размер для всей строки */
     font-weight: 400;
     color: #000;
     padding: 0 12px;
@@ -206,18 +206,18 @@ body {
 .label {
     width: 98px;          /* было 49px, теперь в 2 раза */
     text-transform: lowercase;
-    font-size: 11.58px;
+    font-size: 11.58px;   /* увеличенный шрифт для заголовка */
 }
 .coordinate-value {
     margin-left: auto;
-    font-size: 23.72px;   /* было 11.86px */
+    font-size: 11.86px;   /* оставляем оригинальный размер */
     text-align: right;
     font-weight: 400;
 }
 
 .location-row {
     position: absolute;
-    top: 70px;            /* поднято, чтобы поместить увеличенный шрифт */
+    top: 70px;
     left: 0;
     right: 30px;
     display: flex;
@@ -228,13 +228,13 @@ body {
 }
 .location-value {
     margin-left: auto;
-    font-size: 23.72px;
+    font-size: 11.86px;   /* оставляем оригинальный размер */
     text-align: right;
     max-width: 142px;
     word-break: break-word;
 }
 
-/* === Кнопка Play/Pause (одна) === */
+/* === Кнопка Play/Pause === */
 .playback-controls {
     position: absolute;
     bottom: 10px;
@@ -485,14 +485,14 @@ body {
         font-size: 10px;
     }
     .coordinate-value {
-        font-size: 18px;
+        font-size: 10px;
     }
     .location-row {
         top: 60px;
         font-size: 10px;
     }
     .location-value {
-        font-size: 18px;
+        font-size: 10px;
         max-width: 110px;
     }
     .playback-controls { bottom: 8px; }

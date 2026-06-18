@@ -24,9 +24,8 @@ let noiseLayer;
 let mapTintDiv;
 let globalTintDiv;
 let currentAudio = null;
-let isPlaying = false; // состояние кнопки
+let isPlaying = false;
 
-// Элементы панели
 const infoPanel = document.getElementById('infoPanel');
 const coordinateSpan = document.getElementById('coordinateValue');
 const locationSpan = document.getElementById('locationValue');
