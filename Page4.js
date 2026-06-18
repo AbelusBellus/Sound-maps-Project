@@ -2,10 +2,8 @@
 const ADMIN_PASSWORD = 'INFJ';
 const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
-// Границы Нижнего Новгорода
 const CITY_BOUNDS = L.latLngBounds([56.20, 43.80], [56.40, 44.10]);
 
-// Цвета для оверлеев
 const PHASE_COLORS = {
     morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
     day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
@@ -26,6 +24,14 @@ let noiseLayer;
 let mapTintDiv;
 let globalTintDiv;
 let currentAudio = null;
+let isPlaying = false;
+
+const infoPanel = document.getElementById('infoPanel');
+const coordinateSpan = document.getElementById('coordinateValue');
+const locationSpan = document.getElementById('locationValue');
+const timeSlider = document.getElementById('timeSlider');
+const volumeSlider = document.getElementById('volumeSlider');
+const playPauseBtn = document.getElementById('playPauseBtn');
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
@@ -77,12 +83,12 @@ function loadMarkersFromStorage() {
         saveMarkersToStorage();
     } else {
         allMarkersData = [
-            { lat: 56.326, lng: 44.006, title: 'Нижегородский кремль', soundUrl: 'Sounds/nn_kremlin.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-            { lat: 56.321, lng: 44.020, title: 'Чкаловская лестница', soundUrl: 'Sounds/nn_chkalov.mp3', phase: 'day', noiseParams: { radius: 120, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 56.330, lng: 44.000, title: 'Парк Швейцария', soundUrl: 'Sounds/nn_park.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(90, 70%, 60%, 0.5)' } },
-            { lat: 56.316, lng: 43.990, title: 'Нижегородская ярмарка', soundUrl: 'Sounds/nn_fair.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(60, 70%, 60%, 0.5)' } },
-            { lat: 56.335, lng: 44.030, title: 'Стрелка (место слияния рек)', soundUrl: 'Sounds/nn_strelka.mp3', phase: 'day', noiseParams: { radius: 200, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 56.310, lng: 44.015, title: 'Печёрский монастырь', soundUrl: 'Sounds/nn_monastery.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(300, 70%, 60%, 0.5)' } }
+            { lat: 56.326, lng: 44.006, title: 'Нижегородский кремль', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
+            { lat: 56.321, lng: 44.020, title: 'Чкаловская лестница', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 120, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 56.330, lng: 44.000, title: 'Парк Швейцария', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(90, 70%, 60%, 0.5)' } },
+            { lat: 56.316, lng: 43.990, title: 'Нижегородская ярмарка', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(60, 70%, 60%, 0.5)' } },
+            { lat: 56.335, lng: 44.030, title: 'Стрелка (место слияния рек)', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 200, color: 'hsla(200, 70%, 60%, 0.5)' } },
+            { lat: 56.310, lng: 44.015, title: 'Печёрский монастырь', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(300, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
@@ -143,7 +149,7 @@ function animateCircleDisappearance(circleObj, duration = 300, onComplete) {
     requestAnimationFrame(step);
 }
 
-// ==================== МАРКЕРЫ ЕДИНОГО ЦВЕТА ====================
+// ==================== МАРКЕРЫ ====================
 function getMarkerIcon() {
     const color = '#fff0d9';
     return L.divIcon({
@@ -158,9 +164,42 @@ function stopCurrentAudio() {
         currentAudio.pause();
         currentAudio.currentTime = 0;
         currentAudio = null;
+        isPlaying = false;
+        if (playPauseBtn) playPauseBtn.textContent = '▶';
     }
 }
 
+// ==================== ФУНКЦИИ ДЛЯ ПАНЕЛИ ПЛЕЕРА ====================
+function updateInfoPanel(markerData) {
+    coordinateSpan.textContent = `${markerData.lat.toFixed(6)}, ${markerData.lng.toFixed(6)}`;
+    locationSpan.textContent = markerData.title || 'Без названия';
+    infoPanel.style.display = 'block';
+}
+
+function syncTimeSlider() {
+    if (currentAudio && !isNaN(currentAudio.duration) && isFinite(currentAudio.duration)) {
+        const percent = (currentAudio.currentTime / currentAudio.duration) * 100;
+        timeSlider.value = percent;
+    }
+}
+
+function syncVolumeSlider() {
+    if (currentAudio) {
+        volumeSlider.value = currentAudio.volume;
+    }
+}
+
+function bindAudioEvents(audio) {
+    audio.addEventListener('timeupdate', syncTimeSlider);
+    audio.addEventListener('ended', () => {
+        timeSlider.value = 0;
+        if (playPauseBtn) playPauseBtn.textContent = '▶';
+        isPlaying = false;
+    });
+    audio.volume = parseFloat(volumeSlider.value);
+}
+
+// ==================== ДОБАВЛЕНИЕ МАРКЕРА ====================
 function addMarkerToMap(markerData) {
     const icon = getMarkerIcon();
     const marker = L.marker([markerData.lat, markerData.lng], { icon }).addTo(map);
@@ -172,8 +211,20 @@ function addMarkerToMap(markerData) {
         if (markerData.soundUrl) {
             const audio = new Audio(markerData.soundUrl);
             currentAudio = audio;
-            audio.play().catch(e => console.warn(e));
-            audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
+            bindAudioEvents(audio);
+            updateInfoPanel(markerData);
+            audio.play().then(() => {
+                isPlaying = true;
+                if (playPauseBtn) playPauseBtn.textContent = '⏸';
+            }).catch(e => console.warn(e));
+            audio.onended = () => {
+                if (currentAudio === audio) {
+                    currentAudio = null;
+                    isPlaying = false;
+                    if (playPauseBtn) playPauseBtn.textContent = '▶';
+                    timeSlider.value = 0;
+                }
+            };
         } else {
             alert('Звук не задан');
         }
@@ -193,6 +244,8 @@ function addMarkerToMap(markerData) {
 
 function refreshMarkers() {
     stopCurrentAudio();
+    if (infoPanel) infoPanel.style.display = 'none';
+
     markers.forEach(item => {
         map.removeLayer(item.marker);
         if (item.noiseShape) map.removeLayer(item.noiseShape.circle);
@@ -203,7 +256,7 @@ function refreshMarkers() {
     allMarkersData.forEach(data => addMarkerToMap(data));
 }
 
-// ==================== ТОНИРОВКА ПО ВРЕМЕНИ ====================
+// ==================== ТОНИРОВКА ====================
 function setTintByTime() {
     const hour = new Date().getHours();
     let phase;
@@ -348,6 +401,38 @@ function toggleNoiseMap() {
         noiseLayer.clearLayers();
         markers.forEach(item => { if (item.noiseShape) item.noiseShape = null; });
     }
+}
+
+// ==================== ОБРАБОТЧИКИ ПЛЕЕРА ====================
+if (timeSlider) {
+    timeSlider.addEventListener('input', (e) => {
+        if (currentAudio && !isNaN(currentAudio.duration)) {
+            const seekTime = (e.target.value / 100) * currentAudio.duration;
+            currentAudio.currentTime = seekTime;
+        }
+    });
+}
+if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+        if (currentAudio) {
+            currentAudio.volume = parseFloat(e.target.value);
+        }
+    });
+}
+if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', () => {
+        if (currentAudio) {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+            } else {
+                currentAudio.play().catch(e => console.warn(e));
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+            }
+        }
+    });
 }
 
 // ==================== ЗАПУСК ====================

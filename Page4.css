@@ -127,6 +127,183 @@ body {
     height: 100%;
 }
 
+/* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ ===== */
+.info-panel {
+    position: absolute;
+    bottom: 20px;
+    left: 34.51px;
+    right: 34.51px;
+    height: 130px;
+    background: #FAF8F3;
+    border: 0.8px solid #000000;
+    border-top: 0.8px dashed #000;
+    border-right: 0.8px dashed #000;
+    border-left: none;
+    border-bottom: none;
+    box-sizing: border-box;
+    z-index: 30;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0;
+    overflow: visible;
+}
+
+.time-slider-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 26.38px;
+    pointer-events: none;
+}
+.time-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 26.38px;
+    -webkit-appearance: none;
+    background: transparent;
+    pointer-events: auto;
+    margin: 0;
+}
+.time-slider:focus { outline: none; }
+.time-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    border-top: 1px dashed #000;
+    border-right: 1px dashed #000;
+    border-left: none;
+    border-bottom: none;
+}
+.time-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26.38px;
+    height: 26.38px;
+    border-radius: 50%;
+    background: #000;
+    border: 0.8px solid #000;
+    cursor: pointer;
+    margin-top: -12px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    pointer-events: auto;
+}
+
+.coordinate-row {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 30px;
+    display: flex;
+    align-items: baseline;
+    font-size: 11.58px;
+    font-weight: 400;
+    color: #000;
+    padding: 0 12px;
+}
+.label {
+    width: 98px;
+    text-transform: lowercase;
+    font-size: 11.58px;
+}
+.coordinate-value {
+    margin-left: auto;
+    font-size: 11.86px;
+    text-align: right;
+    font-weight: 400;
+}
+
+.location-row {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 30px;
+    display: flex;
+    align-items: baseline;
+    font-size: 11.58px;
+    font-weight: 400;
+    padding: 0 12px;
+}
+.location-value {
+    margin-left: auto;
+    font-size: 11.86px;
+    text-align: right;
+    max-width: 142px;
+    word-break: break-word;
+}
+
+.playback-controls {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 31;
+}
+.play-pause-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
+    padding: 0;
+    line-height: 1;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.play-pause-btn:hover {
+    opacity: 0.7;
+}
+
+.volume-slider-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30px;
+    pointer-events: none;
+}
+.volume-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-appearance: none;
+    background: transparent;
+    pointer-events: auto;
+    margin: 0;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: top left;
+    width: 130px;
+    height: 30px;
+    top: 0;
+    left: 0;
+}
+.volume-slider:focus { outline: none; }
+.volume-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    border-top: 1px dashed #000;
+    border-right: 1px dashed #000;
+    border-left: none;
+    border-bottom: none;
+}
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000;
+    border: 0.8px solid #000;
+    cursor: pointer;
+    margin-top: -9px;
+    pointer-events: auto;
+}
+
 #invisibleAuthBtn {
     position: absolute;
     bottom: 20px;
@@ -285,6 +462,38 @@ body {
         border: 0.37px solid #000000;
         z-index: 5;
     }
+    .info-panel {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 140px;
+    }
+    .coordinate-row {
+        top: 35px;
+        font-size: 10px;
+    }
+    .label {
+        width: 80px;
+        font-size: 10px;
+    }
+    .coordinate-value {
+        font-size: 10px;
+    }
+    .location-row {
+        top: 60px;
+        font-size: 10px;
+    }
+    .location-value {
+        font-size: 10px;
+        max-width: 110px;
+    }
+    .playback-controls { bottom: 8px; }
+    .play-pause-btn { font-size: 20px; width: 34px; height: 34px; }
+    .volume-slider-wrapper { width: 25px; }
+    .volume-slider {
+        width: 140px;
+        height: 25px;
+    }
     #invisibleAuthBtn {
         bottom: 10px;
         left: 10px;
@@ -305,21 +514,4 @@ body {
     #map-tint, .global-tint {
         z-index: 10;
     }
-    /* Гарантируем, что иконка маркера будет видима */
-.leaflet-div-icon {
-    background: transparent !important;
-    border: none !important;
-}
-.custom-marker-icon {
-    background: transparent !important;
-    width: 24px !important;
-    height: 24px !important;
-}
-.custom-marker-icon div {
-    width: 24px !important;
-    height: 24px !important;
-    border-radius: 50% !important;
-    border: 2px solid white !important;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5) !important;
-}
 }
