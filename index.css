@@ -246,7 +246,7 @@ body {
     /* Список городов (по умолчанию скрыт) */
     .city-list {
         position: absolute;
-        top: 220px;
+        top: 250px;
         left: 112.07px;
         display: none;
         flex-direction: column;
