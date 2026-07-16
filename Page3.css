@@ -1,15 +1,14 @@
-/* ===== ГЛОБАЛЬНЫЙ СБРОС ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
 }
 
-/* ===== ОСНОВНЫЕ БЛОКИ – БЕЗ ОГРАНИЧЕНИЙ ПРОКРУТКИ ===== */
 html, body {
-    height: auto !important;
+    height: auto;
     min-height: 100vh;
-    overflow-y: auto !important;
+    overflow-y: auto;
     overflow-x: hidden;
     background: #FAF8F3;
     font-family: 'IBM Plex Mono', monospace;
@@ -27,7 +26,7 @@ html, body {
     padding-bottom: 40px;
 }
 
-/* ===== ФОНЫ ===== */
+/* Фоны (остаются абсолютными) */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -50,7 +49,7 @@ html, body {
     z-index: 1;
 }
 
-/* ===== ВЕРХНЯЯ СТРОКА ===== */
+/* Заголовки – абсолютные */
 .title {
     position: absolute;
     top: 4.02vh;
@@ -123,32 +122,30 @@ html, body {
     white-space: nowrap;
 }
 
-/* ===== КАРТА И ПЛЕЕР (В ПОТОКЕ) ===== */
-.map-player-wrapper {
-    position: relative;
-    width: 51.3vw;
-    margin: 11.13vh auto 0;
-    z-index: 5;
-}
-
+/* ===== КАРТА (в потоке) ===== */
 #mapContainer {
-    width: 100%;
-    aspect-ratio: 1 / 1;
+    width: 51.3vw;
+    max-width: 51.3vw;
+    height: 51.3vw;
     max-height: 79.35vh;
+    margin-left: 27.13vw;
+    margin-top: 11.13vh;
     border: 1px solid #000000;
     background: #e0e0e0;
     overflow: hidden;
+    z-index: 5;
 }
 #map {
     width: 100%;
     height: 100%;
 }
 
-/* ===== ПЛЕЕР ===== */
+/* ===== ПЛЕЕР (в потоке, сразу под картой) ===== */
 .info-panel {
-    width: 100%;
-    height: 130px;
+    width: 51.3vw;
+    margin-left: 27.13vw;
     margin-top: 10px;
+    height: 130px;
     background: #FAF8F3;
     border: 0.8px solid #000000;
     border-top: 0.8px dashed #000;
@@ -442,17 +439,17 @@ html, body {
         font-size: 16px;
         white-space: nowrap;
     }
-    .map-player-wrapper {
-        width: 323.97px;
-        margin: 219.64px auto 0;
-    }
     #mapContainer {
-        width: 100%;
-        aspect-ratio: 1 / 1;
+        width: 323.97px;
+        height: 323.97px;
+        margin-left: 34.51px;
+        margin-top: 219.64px;
     }
     .info-panel {
-        height: 140px;
+        width: 323.97px;
+        margin-left: 34.51px;
         margin-top: 10px;
+        height: 140px;
     }
     .coordinate-row {
         top: 35px;
