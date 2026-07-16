@@ -4,29 +4,17 @@ const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
 const CITY_BOUNDS = L.latLngBounds([55.62, 37.50], [55.85, 37.82]);
 
-const PHASE_COLORS = {
-    morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
-    day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
-    evening: { map: 'rgba(255, 69, 0, 0.2)',   global: 'rgba(255, 69, 0, 0.07)' },
-    night:   { map: 'rgba(0, 0, 50, 0.5)',     global: 'rgba(0, 0, 30, 0.15)' }
-};
-
-const TRANSITION_DURATION = 5000;
-
 // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
 let map;
 let markers = [];
 let allMarkersData = [];
-let currentPhase = 'day';
 let isAdmin = false;
 let noiseEnabled = false;
 let noiseLayer;
-let mapTintDiv;
-let globalTintDiv;
 let currentAudio = null;
 let isPlaying = false;
 
-// Получаем элементы плеера (будут определены после загрузки DOM)
+// Элементы плеера
 let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
@@ -43,24 +31,6 @@ function initMap() {
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(map);
-
-    mapTintDiv = L.DomUtil.create('div', 'map-tint-overlay');
-    mapTintDiv.id = 'map-tint';
-    map.getContainer().appendChild(mapTintDiv);
-    mapTintDiv.style.position = 'absolute';
-    mapTintDiv.style.top = '0';
-    mapTintDiv.style.left = '0';
-    mapTintDiv.style.pointerEvents = 'none';
-    mapTintDiv.style.transition = `background-color ${TRANSITION_DURATION}ms ease`;
-
-    const updateTintSize = () => {
-        const container = map.getContainer();
-        const rect = container.getBoundingClientRect();
-        mapTintDiv.style.width = rect.width + 'px';
-        mapTintDiv.style.height = rect.height + 'px';
-    };
-    map.on('moveend zoomend', updateTintSize);
-    setTimeout(updateTintSize, 100);
 }
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
@@ -79,12 +49,12 @@ function loadMarkersFromStorage() {
         saveMarkersToStorage();
     } else {
         allMarkersData = [
-            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
-            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
-            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
-            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
+            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
+            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
+            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
+            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
+            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
@@ -195,7 +165,6 @@ function bindAudioEvents(audio) {
         isPlaying = false;
         currentAudio = null;
     });
-    // Устанавливаем громкость из слайдера
     if (volumeSlider) {
         audio.volume = parseFloat(volumeSlider.value);
     }
@@ -248,25 +217,6 @@ function refreshMarkers() {
     if (noiseLayer) noiseLayer.clearLayers();
 
     allMarkersData.forEach(data => addMarkerToMap(data));
-}
-
-// ==================== ТОНИРОВКА ====================
-function setTintByTime() {
-    const hour = new Date().getHours();
-    let phase;
-    if (hour >= 5 && hour < 10) phase = 'morning';
-    else if (hour >= 10 && hour < 18) phase = 'day';
-    else if (hour >= 18 && hour < 22) phase = 'evening';
-    else phase = 'night';
-    
-    currentPhase = phase;
-    if (mapTintDiv) mapTintDiv.style.backgroundColor = PHASE_COLORS[phase].map;
-    if (globalTintDiv) globalTintDiv.style.backgroundColor = PHASE_COLORS[phase].global;
-}
-
-function startTintUpdater() {
-    setTintByTime();
-    setInterval(setTintByTime, 60000);
 }
 
 // ==================== АДМИНИСТРИРОВАНИЕ ====================
@@ -440,14 +390,11 @@ function initPlayerControls() {
 
 // ==================== ЗАПУСК ====================
 document.addEventListener('DOMContentLoaded', () => {
-    initPlayerControls(); // сначала инициализируем элементы управления
+    initPlayerControls();
     initMap();
     loadMarkersFromStorage();
     checkAuth();
     initNoiseLayer();
-
-    globalTintDiv = document.getElementById('globalTint');
-    startTintUpdater();
     refreshMarkers();
 
     const authBtn = document.getElementById('invisibleAuthBtn');
@@ -472,5 +419,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupMapClick();
-    if (mapTintDiv) mapTintDiv.style.pointerEvents = 'none';
 });

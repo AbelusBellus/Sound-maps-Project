@@ -4,29 +4,16 @@ const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
 const CITY_BOUNDS = L.latLngBounds([55.38, 37.48], [55.47, 37.62]);
 
-const PHASE_COLORS = {
-    morning: { map: 'rgba(255, 140, 0, 0.15)', global: 'rgba(255, 140, 0, 0.05)' },
-    day:     { map: 'rgba(255, 255, 200, 0.1)', global: 'rgba(0, 0, 0, 0)' },
-    evening: { map: 'rgba(255, 69, 0, 0.2)',   global: 'rgba(255, 69, 0, 0.07)' },
-    night:   { map: 'rgba(0, 0, 50, 0.5)',     global: 'rgba(0, 0, 30, 0.15)' }
-};
-
-const TRANSITION_DURATION = 5000;
-
 // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
 let map;
 let markers = [];
 let allMarkersData = [];
-let currentPhase = 'day';
 let isAdmin = false;
 let noiseEnabled = false;
 let noiseLayer;
-let mapTintDiv;
-let globalTintDiv;
 let currentAudio = null;
 let isPlaying = false;
 
-// Элементы плеера (будут инициализированы после загрузки DOM)
 let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
@@ -43,24 +30,6 @@ function initMap() {
         subdomains: 'abcd',
         maxZoom: 19
     }).addTo(map);
-
-    mapTintDiv = L.DomUtil.create('div', 'map-tint-overlay');
-    mapTintDiv.id = 'map-tint';
-    map.getContainer().appendChild(mapTintDiv);
-    mapTintDiv.style.position = 'absolute';
-    mapTintDiv.style.top = '0';
-    mapTintDiv.style.left = '0';
-    mapTintDiv.style.pointerEvents = 'none';
-    mapTintDiv.style.transition = `background-color ${TRANSITION_DURATION}ms ease`;
-
-    const updateTintSize = () => {
-        const container = map.getContainer();
-        const rect = container.getBoundingClientRect();
-        mapTintDiv.style.width = rect.width + 'px';
-        mapTintDiv.style.height = rect.height + 'px';
-    };
-    map.on('moveend zoomend', updateTintSize);
-    setTimeout(updateTintSize, 100);
 }
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
@@ -78,96 +47,89 @@ function loadMarkersFromStorage() {
         });
         saveMarkersToStorage();
     } else {
+        // Новый список маркеров (без парка Талалихино)
         allMarkersData = [
-    {
-        lat: 55.433056,
-        lng: 37.563611,
-        title: 'Екатерининский сквер',
-        soundUrl: 'Sounds/ZOOM0012_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 120, color: 'hsla(200, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.441389,
-        lng: 37.494444,
-        title: 'Знаменская церковь. Дубровицы',
-        soundUrl: 'Sounds/ZOOM0006_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.420278,
-        lng: 37.547778,
-        title: 'Капитолий Торговый центр. Внутри.',
-        soundUrl: 'Sounds/ZOOM0022_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 110, color: 'hsla(60, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.418889,
-        lng: 37.483611,
-        title: 'Кузнечики. бульвар 65-летия победы. аллея',
-        soundUrl: 'Sounds/ZOOM0008_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 140, color: 'hsla(90, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.435833,
-        lng: 37.551667,
-        title: 'Проспект Ленина, мост над рекой Пахрой под мостом',
-        soundUrl: 'Sounds/ZOOM0018_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 100, color: 'hsla(160, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.436944,
-        lng: 37.564167,
-        title: 'Рабочая улица,38 внутренний дворик',
-        soundUrl: 'Sounds/ZOOM0013_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 90, color: 'hsla(200, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.440833,
-        lng: 37.499167,
-        title: 'Смотровая площадка Дубровицы',
-        soundUrl: 'Sounds/ZOOM0007_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.431667,
-        lng: 37.565278,
-        title: 'Станция Подольск',
-        soundUrl: 'Sounds/ZOOM0010_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 130, color: 'hsla(280, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.433611,
-        lng: 37.546389,
-        title: 'Троицкий собор',
-        soundUrl: 'Sounds/ZOOM0020_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 150, color: 'hsla(320, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.443000,  // подобрано самостоятельно – северо-восточнее основной части парка
-        lng: 37.565000,
-        title: 'Парк Талалихино_новая часть',
-        soundUrl: 'Sounds/ZOOM0015_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 140, color: 'hsla(10, 70%, 60%, 0.5)' }
-    },
-    {
-        lat: 55.431500,  // примерные координаты памятника Ленину в центре Подольска
-        lng: 37.548500,
-        title: 'Памятник Ленину',
-        soundUrl: 'Sounds/ZOOM0011_TrLR.WAV',
-        phase: 'day',
-        noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' }
-    }
-];
+            {
+                lat: 55.433056,
+                lng: 37.563611,
+                title: 'Екатерининский сквер',
+                soundUrl: 'Sounds/ZOOM0012_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 120, color: 'hsla(200, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.441389,
+                lng: 37.494444,
+                title: 'Знаменская церковь. Дубровицы',
+                soundUrl: 'Sounds/ZOOM0006_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.420278,
+                lng: 37.547778,
+                title: 'Капитолий Торговый центр. Внутри.',
+                soundUrl: 'Sounds/ZOOM0022_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 110, color: 'hsla(60, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.418889,
+                lng: 37.483611,
+                title: 'Кузнечики. бульвар 65-летия победы. аллея',
+                soundUrl: 'Sounds/ZOOM0008_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 140, color: 'hsla(90, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.435833,
+                lng: 37.551667,
+                title: 'Проспект Ленина, мост над рекой Пахрой под мостом',
+                soundUrl: 'Sounds/ZOOM0018_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 100, color: 'hsla(160, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.436944,
+                lng: 37.564167,
+                title: 'Рабочая улица,38 внутренний дворик',
+                soundUrl: 'Sounds/ZOOM0013_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 90, color: 'hsla(200, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.440833,
+                lng: 37.499167,
+                title: 'Смотровая площадка Дубровицы',
+                soundUrl: 'Sounds/ZOOM0007_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.431667,
+                lng: 37.565278,
+                title: 'Станция Подольск',
+                soundUrl: 'Sounds/ZOOM0010_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 130, color: 'hsla(280, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.433611,
+                lng: 37.546389,
+                title: 'Троицкий собор',
+                soundUrl: 'Sounds/ZOOM0020_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 150, color: 'hsla(320, 70%, 60%, 0.5)' }
+            },
+            {
+                lat: 55.431500,
+                lng: 37.548500,
+                title: 'Памятник Ленину',
+                soundUrl: 'Sounds/ZOOM0011_TrLR.WAV',
+                phase: 'day',
+                noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' }
+            }
+        ];
         saveMarkersToStorage();
     }
 }
@@ -329,25 +291,6 @@ function refreshMarkers() {
     if (noiseLayer) noiseLayer.clearLayers();
 
     allMarkersData.forEach(data => addMarkerToMap(data));
-}
-
-// ==================== ТОНИРОВКА ====================
-function setTintByTime() {
-    const hour = new Date().getHours();
-    let phase;
-    if (hour >= 5 && hour < 10) phase = 'morning';
-    else if (hour >= 10 && hour < 18) phase = 'day';
-    else if (hour >= 18 && hour < 22) phase = 'evening';
-    else phase = 'night';
-    
-    currentPhase = phase;
-    if (mapTintDiv) mapTintDiv.style.backgroundColor = PHASE_COLORS[phase].map;
-    if (globalTintDiv) globalTintDiv.style.backgroundColor = PHASE_COLORS[phase].global;
-}
-
-function startTintUpdater() {
-    setTintByTime();
-    setInterval(setTintByTime, 60000);
 }
 
 // ==================== АДМИНИСТРИРОВАНИЕ ====================
@@ -526,9 +469,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMarkersFromStorage();
     checkAuth();
     initNoiseLayer();
-
-    globalTintDiv = document.getElementById('globalTint');
-    startTintUpdater();
     refreshMarkers();
 
     const authBtn = document.getElementById('invisibleAuthBtn');
@@ -553,5 +493,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupMapClick();
-    if (mapTintDiv) mapTintDiv.style.pointerEvents = 'none';
 });
