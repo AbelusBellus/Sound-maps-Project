@@ -443,12 +443,23 @@ html, body {
     z-index: 5;
 }
     .info-panel {
-        position: absolute;
-        top: calc(219.64px + 223.97px + 10px);
-        left: 34.51px;
-        width: 323.97px;
-        height: 140px;
-    }
+    position: absolute;
+    top: calc(219.64px + 323.97px + 10px); /* высота карты + отступ 10px */
+    left: 34.51px;                         /* совпадает с отступом карты */
+    width: 323.97px;                       /* ширина как у карты */
+    height: 140px;                         /* или 130px, как у вас */
+    background: #FAF8F3;
+    border: 0.8px solid #000000;
+    border-top: 0.8px dashed #000;
+    border-right: 0.8px dashed #000;
+    border-left: none;
+    border-bottom: none;
+    box-sizing: border-box;
+    z-index: 30;
+    font-family: 'IBM Plex Mono', monospace;
+    padding: 0;
+    overflow: visible;
+}
     .coordinate-row {
         top: 35px;
         font-size: 10px;
