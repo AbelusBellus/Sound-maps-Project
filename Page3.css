@@ -444,7 +444,7 @@ html, body {
 }
     .info-panel {
         position: absolute;
-        top: calc(219.64px + 123.97px + 10px);
+        top: calc(219.64px + 223.97px + 10px);
         left: 34.51px;
         width: 323.97px;
         height: 140px;
