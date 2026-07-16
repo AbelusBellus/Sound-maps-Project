@@ -8,17 +8,18 @@
 body {
     background: #FAF8F3;
     font-family: 'IBM Plex Mono', monospace;
-    overflow: hidden;
+    overflow-y: auto;          /* разрешаем вертикальную прокрутку */
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;         /* вместо 100vh, чтобы контент мог расширяться */
 }
 
 .page {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;         /* теперь высота подстраивается под контент */
     background-color: #FAF8F3;
-    overflow: hidden;
+    overflow: visible;         /* разрешаем выход за пределы, если нужно */
+    padding-bottom: 20px;      /* небольшой отступ снизу */
 }
 
 .bg-1 {
@@ -131,7 +132,7 @@ body {
 /* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ – привязана к карте ===== */
 .info-panel {
     position: absolute;
-    top: calc(11.13vh + 51.3vw + 15px); /* нижняя граница карты + отступ */
+    top: calc(11.13vh + 51.3vw + 10px); /* уменьшил отступ до 10px */
     left: 27.13vw;
     width: 51.3vw;
     height: 130px;
@@ -368,17 +369,17 @@ body {
 /* ========== МОБИЛЬНАЯ АДАПТАЦИЯ ========== */
 @media (max-width: 480px) {
     body {
-        overflow: auto;
-        height: auto;
+        overflow-y: auto;
         background: #FAF8F3;
     }
     .page {
         width: 393px;
-        height: 852px;
+        min-height: 100vh;
         background-color: #FAF8F3;
         overflow: visible;
         margin: 0 auto;
         position: relative;
+        padding-bottom: 30px;
     }
     .desktop-bg { display: none; }
     .bg-mobile {
@@ -440,12 +441,12 @@ body {
         border: 0.37px solid #000000;
         z-index: 5;
     }
-   .info-panel {
-    top: calc(219.64px + 323.97px + 15px);
-    left: 34.51px;
-    width: 323.97px;
-    height: 140px;
-}
+    .info-panel {
+        top: calc(219.64px + 323.97px + 10px);
+        left: 34.51px;
+        width: 323.97px;
+        height: 140px;
+    }
     .coordinate-row {
         top: 35px;
         font-size: 10px;
@@ -479,7 +480,7 @@ body {
         height: 30px;
     }
     .admin-panel {
-        top: 620px;
+        top: 620px;  /* под плеером */
         left: 34.51px;
         right: auto;
         bottom: auto;
