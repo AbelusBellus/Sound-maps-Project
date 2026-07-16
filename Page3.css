@@ -8,7 +8,7 @@
 html, body {
     height: auto;
     min-height: 100vh;
-    overflow-y: auto;
+    overflow-y: auto !important;
     overflow-x: hidden;
     background: #FAF8F3;
     font-family: 'IBM Plex Mono', monospace;
@@ -16,17 +16,12 @@ html, body {
 
 .page {
     position: relative;
-    width: 100%;
-    max-width: 1728px;
-    margin: 0 auto;
-    min-height: 100vh;
-    height: auto;
-    overflow: visible;
+    width: 100vw;
+    min-height: 120vh; /* делаем выше, чтобы была прокрутка */
     background-color: #FAF8F3;
-    padding-bottom: 40px;
+    overflow: visible;
 }
 
-/* Фоны (остаются абсолютными) */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -49,7 +44,6 @@ html, body {
     z-index: 1;
 }
 
-/* Заголовки – абсолютные */
 .title {
     position: absolute;
     top: 4.02vh;
@@ -122,14 +116,14 @@ html, body {
     white-space: nowrap;
 }
 
-/* ===== КАРТА (в потоке) ===== */
+/* ===== КАРТА (абсолютно) ===== */
 #mapContainer {
+    position: absolute;
+    top: 11.13vh;
+    left: 27.13vw;
     width: 51.3vw;
-    max-width: 51.3vw;
     height: 51.3vw;
     max-height: 79.35vh;
-    margin-left: 27.13vw;
-    margin-top: 11.13vh;
     border: 1px solid #000000;
     background: #e0e0e0;
     overflow: hidden;
@@ -140,11 +134,12 @@ html, body {
     height: 100%;
 }
 
-/* ===== ПЛЕЕР (в потоке, сразу под картой) ===== */
+/* ===== ПЛЕЕР (абсолютно, под картой) ===== */
 .info-panel {
+    position: absolute;
+    top: calc(11.13vh + 51.3vw + 10px);
+    left: 27.13vw;
     width: 51.3vw;
-    margin-left: 27.13vw;
-    margin-top: 10px;
     height: 130px;
     background: #FAF8F3;
     border: 0.8px solid #000000;
@@ -153,12 +148,13 @@ html, body {
     border-left: none;
     border-bottom: none;
     box-sizing: border-box;
+    z-index: 30;
     font-family: 'IBM Plex Mono', monospace;
     padding: 0;
-    position: relative;
-    z-index: 30;
+    overflow: visible;
 }
 
+/* Внутренние элементы плеера – без изменений */
 .time-slider-wrapper {
     position: absolute;
     top: 0;
@@ -316,7 +312,6 @@ html, body {
     pointer-events: auto;
 }
 
-/* ===== КНОПКИ ===== */
 #invisibleAuthBtn {
     position: fixed;
     bottom: 20px;
@@ -384,9 +379,8 @@ html, body {
     }
     .page {
         width: 393px;
-        min-height: 100vh;
+        min-height: 120vh;
         margin: 0 auto;
-        padding-bottom: 30px;
     }
     .desktop-bg { display: none; }
     .bg-mobile {
@@ -440,15 +434,17 @@ html, body {
         white-space: nowrap;
     }
     #mapContainer {
+        position: absolute;
+        top: 219.64px;
+        left: 34.51px;
         width: 323.97px;
         height: 323.97px;
-        margin-left: 34.51px;
-        margin-top: 219.64px;
     }
     .info-panel {
+        position: absolute;
+        top: calc(219.64px + 323.97px + 10px);
+        left: 34.51px;
         width: 323.97px;
-        margin-left: 34.51px;
-        margin-top: 10px;
         height: 140px;
     }
     .coordinate-row {
