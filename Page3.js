@@ -149,6 +149,10 @@ function updateInfoPanel(markerData) {
     locationSpan.textContent = markerData.title || 'Без названия';
     infoPanel.style.display = 'block';
     console.log('Плеер отображён');
+    // Прокручиваем к плееру
+    setTimeout(() => {
+        infoPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
 }
 
 function syncTimeSlider() {
