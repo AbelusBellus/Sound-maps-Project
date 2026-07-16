@@ -1,29 +1,33 @@
+/* ===== ГЛОБАЛЬНЫЙ СБРОС ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
 }
 
-body {
+/* ===== ОСНОВНЫЕ БЛОКИ – БЕЗ ОГРАНИЧЕНИЙ ПРОКРУТКИ ===== */
+html, body {
+    height: auto !important;
+    min-height: 100vh;
+    overflow-y: auto !important;
+    overflow-x: hidden;
     background: #FAF8F3;
     font-family: 'IBM Plex Mono', monospace;
-    overflow-y: auto;
-    min-height: 100vh;
-    padding: 20px 0;
 }
 
 .page {
+    position: relative;
+    width: 100%;
     max-width: 1728px;
     margin: 0 auto;
-    position: relative;
-    background-color: #FAF8F3;
     min-height: 100vh;
+    height: auto;
     overflow: visible;
-    padding-bottom: 20px;
+    background-color: #FAF8F3;
+    padding-bottom: 40px;
 }
 
-/* Фоновые изображения (оставляем абсолютными) */
+/* ===== ФОНЫ ===== */
 .bg-1 {
     position: absolute;
     width: 112.2vw;
@@ -46,6 +50,7 @@ body {
     z-index: 1;
 }
 
+/* ===== ВЕРХНЯЯ СТРОКА ===== */
 .title {
     position: absolute;
     top: 4.02vh;
@@ -118,7 +123,7 @@ body {
     white-space: nowrap;
 }
 
-/* Обёртка для карты и плеера – центрируем */
+/* ===== КАРТА И ПЛЕЕР (В ПОТОКЕ) ===== */
 .map-player-wrapper {
     position: relative;
     width: 51.3vw;
@@ -126,7 +131,6 @@ body {
     z-index: 5;
 }
 
-/* Контейнер карты */
 #mapContainer {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -140,7 +144,7 @@ body {
     height: 100%;
 }
 
-/* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ (в потоке, под картой) ===== */
+/* ===== ПЛЕЕР ===== */
 .info-panel {
     width: 100%;
     height: 130px;
@@ -154,7 +158,7 @@ body {
     box-sizing: border-box;
     font-family: 'IBM Plex Mono', monospace;
     padding: 0;
-    position: relative; /* для абсолютного позиционирования внутренних элементов */
+    position: relative;
     z-index: 30;
 }
 
@@ -315,7 +319,7 @@ body {
     pointer-events: auto;
 }
 
-/* ===== Невидимая кнопка авторизации ===== */
+/* ===== КНОПКИ ===== */
 #invisibleAuthBtn {
     position: fixed;
     bottom: 20px;
@@ -327,7 +331,6 @@ body {
     background: transparent;
 }
 
-/* ===== Админ-панель ===== */
 .admin-panel {
     position: fixed;
     bottom: 20px;
