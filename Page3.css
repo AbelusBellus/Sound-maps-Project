@@ -119,10 +119,8 @@ html, body {
 /* ===== КАРТА (абсолютно) ===== */
 #mapContainer {
     position: absolute;
-    margin-left: 27.13vw;
-    margin-top: 11.13vh;
-    top: 11.13vh;
     left: 27.13vw;
+    top: 11.13vh;
     width: 51.3vw;
     height: 51.3vw;
     max-height: 79.35vh;
@@ -436,12 +434,14 @@ html, body {
         white-space: nowrap;
     }
     #mapContainer {
-        position: absolute;
-        top: 219.64px;
-        left: 34.51px;
-        width: 323.97px;
-        height: 323.97px;
-    }
+    position: absolute;
+    left: 34.51px;
+    top: 219.64px;
+    width: 323.97px;
+    height: 323.97px;
+    border: 0.37px solid #000000;
+    z-index: 5;
+}
     .info-panel {
         position: absolute;
         top: calc(219.64px + 323.97px + 10px);
