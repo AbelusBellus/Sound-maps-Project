@@ -137,7 +137,7 @@ html, body {
 /* ===== ПЛЕЕР (абсолютно, под картой) ===== */
 .info-panel {
     position: absolute;
-    top: calc(11.13vh + 51.3vw + 10px);
+    top: calc(11.13vh + 31.3vw + 10px);
     left: 27.13vw;
     width: 51.3vw;
     height: 130px;
@@ -444,7 +444,7 @@ html, body {
 }
     .info-panel {
         position: absolute;
-        top: calc(219.64px + 323.97px + 10px);
+        top: calc(219.64px + 123.97px + 10px);
         left: 34.51px;
         width: 323.97px;
         height: 140px;
