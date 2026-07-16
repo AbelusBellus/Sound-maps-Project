@@ -49,12 +49,12 @@ function loadMarkersFromStorage() {
         saveMarkersToStorage();
     } else {
         allMarkersData = [
-            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
-            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
-            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
-            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Elpankotka.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
+            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
+            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
+            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
+            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
+            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
