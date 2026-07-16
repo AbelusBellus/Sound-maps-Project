@@ -131,7 +131,7 @@ body {
 /* ===== ИНФОРМАЦИОННАЯ ПАНЕЛЬ – привязана к карте ===== */
 .info-panel {
     position: absolute;
-    top: calc(11.13vh + 51.3vw + 15px);
+    top: calc(11.13vh + 51.3vw + 15px); /* нижняя граница карты + отступ */
     left: 27.13vw;
     width: 51.3vw;
     height: 130px;
@@ -440,12 +440,12 @@ body {
         border: 0.37px solid #000000;
         z-index: 5;
     }
-    .info-panel {
-        top: calc(219.64px + 323.97px + 15px);
-        left: 34.51px;
-        width: 323.97px;
-        height: 140px;
-    }
+   .info-panel {
+    top: calc(219.64px + 323.97px + 15px);
+    left: 34.51px;
+    width: 323.97px;
+    height: 140px;
+}
     .coordinate-row {
         top: 35px;
         font-size: 10px;
