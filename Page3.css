@@ -444,7 +444,7 @@ html, body {
 }
     .info-panel {
     position: absolute;
-    top: calc(219.64px + 323.97px + 10px); /* высота карты + отступ 10px */
+    top: calc(219.64px + 323.97px + 20px); /* высота карты + отступ 10px */
     left: 34.51px;                         /* совпадает с отступом карты */
     width: 323.97px;                       /* ширина как у карты */
     height: 140px;                         /* или 130px, как у вас */
