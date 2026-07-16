@@ -145,7 +145,7 @@ html, body {
 /* ===== ПЛЕЕР ===== */
 .info-panel {
     position: absolute;
-    top: calc(11.13vh + 51.3vw + 10px);
+    top: calc(11.13vh + 39.3vw + 10px);
     left: 27.13vw;
     width: 51.3vw;
     height: 130px;
