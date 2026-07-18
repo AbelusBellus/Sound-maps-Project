@@ -84,11 +84,14 @@ html, body {
     position: absolute;
     top: 11.13vh;
     left: 13.89vw;
+    max-width: 19.42vw;          /* ширина вектора */
     font-weight: 200;
     font-size: clamp(20px, 2vw, 34.51px);
-    line-height: 1;
+    line-height: 1.15;            /* небольшой запас для переноса */
     color: #000;
-    white-space: nowrap;
+    text-align: right;           /* прижимаем текст к правому краю */
+    white-space: normal;         /* разрешаем перенос строк */
+    word-wrap: break-word;       /* переносим длинные слова, если нужно */
     cursor: pointer;
     z-index: 2;
 }
@@ -418,14 +421,17 @@ html, body {
         z-index: 2;
     }
     .page-number { display: none; }
-    .city-name {
-        top: 113.05px;
-        left: 64.92px;
-        font-size: 22.46px;
-        font-weight: 200;
-        white-space: nowrap;
-        z-index: 2;
-    }
+.city-name {
+    top: 113.05px;
+    left: 64.92px;
+    max-width: 143.62px;        /* ширина вектора на мобильных */
+    font-size: 22.46px;
+    font-weight: 200;
+    white-space: normal;
+    text-align: right;
+    word-wrap: break-word;
+    z-index: 2;
+}
     .noise-map-btn {
         top: 63.67px;
         right: 34.48px;
