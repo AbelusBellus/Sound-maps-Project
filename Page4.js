@@ -79,12 +79,12 @@ function loadMarkersFromStorage() {
         saveMarkersToStorage();
     } else {
         allMarkersData = [
-            { lat: 56.326, lng: 44.006, title: 'Нижегородский кремль', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-            { lat: 56.321, lng: 44.020, title: 'Чкаловская лестница', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 120, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 56.330, lng: 44.000, title: 'Парк Швейцария', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(90, 70%, 60%, 0.5)' } },
-            { lat: 56.316, lng: 43.990, title: 'Нижегородская ярмарка', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(60, 70%, 60%, 0.5)' } },
-            { lat: 56.335, lng: 44.030, title: 'Стрелка (место слияния рек)', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 200, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 56.310, lng: 44.015, title: 'Печёрский монастырь', soundUrl: 'Sounds/IRIS_OUT.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(300, 70%, 60%, 0.5)' } }
+            { lat: 56.326, lng: 44.006, title: 'Нижегородский кремль', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
+            { lat: 56.321, lng: 44.020, title: 'Чкаловская лестница', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 120, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 56.330, lng: 44.000, title: 'Парк Швейцария', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(90, 70%, 60%, 0.5)' } },
+            { lat: 56.316, lng: 43.990, title: 'Нижегородская ярмарка', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(60, 70%, 60%, 0.5)' } },
+            { lat: 56.335, lng: 44.030, title: 'Стрелка (место слияния рек)', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 200, color: 'hsla(200, 70%, 60%, 0.5)' } },
+            { lat: 56.310, lng: 44.015, title: 'Печёрский монастырь', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(300, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
