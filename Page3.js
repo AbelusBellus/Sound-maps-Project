@@ -57,7 +57,7 @@ function loadMarkersFromStorage() {
             { lat: 55.440833, lng: 37.499167, title: 'Смотровая площадка Дубровицы', soundUrl: 'Sounds/ZOOM0007_TrLR.WAV', phase: 'day', noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' } },
             { lat: 55.431667, lng: 37.565278, title: 'Станция Подольск', soundUrl: 'Sounds/ZOOM0010_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(280, 70%, 60%, 0.5)' } },
             { lat: 55.433611, lng: 37.546389, title: 'Троицкий собор', soundUrl: 'Sounds/ZOOM0020_TrLR.WAV', phase: 'day', noiseParams: { radius: 150, color: 'hsla(320, 70%, 60%, 0.5)' } },
-            { lat: 55.431500, lng: 37.548500, title: 'Памятник Ленину', soundUrl: 'Sounds/ZOOM0011_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' } }
+            { lat: 55.430659, lng: 37.545310, title: 'Памятник Ленину', soundUrl: 'Sounds/ZOOM0011_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' } }
         ];
         saveMarkersToStorage();
     }
