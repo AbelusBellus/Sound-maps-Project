@@ -49,12 +49,12 @@ function loadMarkersFromStorage() {
     } else {
         allMarkersData = [
             { lat: 55.433056, lng: 37.563611, title: 'Екатерининский сквер', soundUrl: 'Sounds/ZOOM0012_TrLR.WAV', phase: 'day', noiseParams: { radius: 120, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 55.441389, lng: 37.494444, title: 'Знаменская церковь. Дубровицы', soundUrl: 'Sounds/ZOOM0006_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.420278, lng: 37.547778, title: 'Капитолий Торговый центр. Внутри.', soundUrl: 'Sounds/ZOOM0022_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(60, 70%, 60%, 0.5)' } },
-            { lat: 55.418889, lng: 37.483611, title: 'Кузнечики. бульвар 65-летия победы. аллея', soundUrl: 'Sounds/ZOOM0008_TrLR.WAV', phase: 'day', noiseParams: { radius: 140, color: 'hsla(90, 70%, 60%, 0.5)' } },
-            { lat: 55.435833, lng: 37.551667, title: 'Проспект Ленина, мост над рекой Пахрой под мостом', soundUrl: 'Sounds/ZOOM0018_TrLR.WAV', phase: 'day', noiseParams: { radius: 100, color: 'hsla(160, 70%, 60%, 0.5)' } },
-            { lat: 55.436944, lng: 37.564167, title: 'Рабочая улица,38 внутренний дворик', soundUrl: 'Sounds/ZOOM0013_TrLR.WAV', phase: 'day', noiseParams: { radius: 90, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 55.440833, lng: 37.499167, title: 'Смотровая площадка Дубровицы', soundUrl: 'Sounds/ZOOM0007_TrLR.WAV', phase: 'day', noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' } },
+            { lat: 55.441389, lng: 37.494444, title: 'Знаменская церковь', soundUrl: 'Sounds/ZOOM0006_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
+            { lat: 55.420278, lng: 37.547778, title: 'Капитолий, Торговый центр', soundUrl: 'Sounds/ZOOM0022_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(60, 70%, 60%, 0.5)' } },
+            { lat: 55.418889, lng: 37.483611, title: 'Бульвар 65-летия Победы', soundUrl: 'Sounds/ZOOM0008_TrLR.WAV', phase: 'day', noiseParams: { radius: 140, color: 'hsla(90, 70%, 60%, 0.5)' } },
+            { lat: 55.435833, lng: 37.551667, title: 'Мост над рекой Пахрой', soundUrl: 'Sounds/ZOOM0018_TrLR.WAV', phase: 'day', noiseParams: { radius: 100, color: 'hsla(160, 70%, 60%, 0.5)' } },
+            { lat: 55.436944, lng: 37.564167, title: 'Рабочая улица', soundUrl: 'Sounds/ZOOM0013_TrLR.WAV', phase: 'day', noiseParams: { radius: 90, color: 'hsla(200, 70%, 60%, 0.5)' } },
+            { lat: 55.440833, lng: 37.499167, title: 'Смотровая площадка', soundUrl: 'Sounds/ZOOM0007_TrLR.WAV', phase: 'day', noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' } },
             { lat: 55.431667, lng: 37.565278, title: 'Станция Подольск', soundUrl: 'Sounds/ZOOM0010_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(280, 70%, 60%, 0.5)' } },
             { lat: 55.433611, lng: 37.546389, title: 'Троицкий собор', soundUrl: 'Sounds/ZOOM0020_TrLR.WAV', phase: 'day', noiseParams: { radius: 150, color: 'hsla(320, 70%, 60%, 0.5)' } },
             { lat: 55.430659, lng: 37.545310, title: 'Памятник Ленину', soundUrl: 'Sounds/ZOOM0011_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' } }
