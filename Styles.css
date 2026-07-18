@@ -83,15 +83,15 @@ html, body {
 .city-name {
     position: absolute;
     top: 11.13vh;
-    left: 13.89vw;
-    max-width: 19.42vw;          /* ширина вектора */
+    left: 3.93vw;           /* как у вектора */
+    width: 19.42vw;         /* как у вектора */
     font-weight: 200;
     font-size: clamp(20px, 2vw, 34.51px);
-    line-height: 1.15;            /* небольшой запас для переноса */
+    line-height: 1.15;
     color: #000;
-    text-align: right;           /* прижимаем текст к правому краю */
-    white-space: normal;         /* разрешаем перенос строк */
-    word-wrap: break-word;       /* переносим длинные слова, если нужно */
+    text-align: right;      /* прижимаем текст к правому краю */
+    white-space: normal;
+    word-wrap: break-word;
     cursor: pointer;
     z-index: 2;
 }
@@ -423,8 +423,8 @@ html, body {
     .page-number { display: none; }
 .city-name {
     top: 113.05px;
-    left: 64.92px;
-    max-width: 143.62px;        /* ширина вектора на мобильных */
+    left: 35.45px;          /* как у вектора на мобильных */
+    width: 143.62px;        /* как у вектора */
     font-size: 22.46px;
     font-weight: 200;
     white-space: normal;
