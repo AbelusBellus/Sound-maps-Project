@@ -153,7 +153,6 @@ html, body {
     width: 51.3vw;
     height: 130px;
     background: #FAF8F3;
-    border: 0.8px solid #000000;
     box-sizing: border-box;
     z-index: 30;
     font-family: 'IBM Plex Mono', monospace;
@@ -460,7 +459,6 @@ html, body {
         width: 323.97px;
         height: 140px;
         background: #FAF8F3;
-        border: 0.8px solid #000000;
         box-sizing: border-box;
         z-index: 30;
         font-family: 'IBM Plex Mono', monospace;
