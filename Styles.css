@@ -461,10 +461,6 @@ html, body {
         height: 140px;
         background: #FAF8F3;
         border: 0.8px solid #000000;
-        border-top: 0.8px dashed #000;
-        border-right: 0.8px dashed #000;
-        border-left: none;
-        border-bottom: none;
         box-sizing: border-box;
         z-index: 30;
         font-family: 'IBM Plex Mono', monospace;
@@ -475,10 +471,11 @@ html, body {
         top: 35px;
         font-size: 10px;
     }
-    .label {
-        width: 80px;
-        font-size: 10px;
-    }
+.label {
+    width: 110px;
+    font-size: 10px;
+    flex-shrink: 0;
+}
     .coordinate-value {
         font-size: 10px;
     }
