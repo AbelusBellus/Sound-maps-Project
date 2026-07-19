@@ -145,6 +145,9 @@ html, body {
     height: 100%;
 }
 
+.leaflet-bottom.leaflet-right {
+    display: none;
+}
 /* ===== ПЛЕЕР ===== */
 .info-panel {
     position: absolute;
