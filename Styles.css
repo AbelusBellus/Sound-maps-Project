@@ -495,7 +495,19 @@ html, body {
         max-width: 110px;
     }
     .playback-controls { bottom: 8px; }
-    .play-pause-btn { font-size: 20px; width: 34px; height: 34px; }
+    .play-pause-btn {
+        width: 34px;
+        height: 34px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    .play-pause-btn.play {
+        background-image: url('/Images/play.png'); /* абсолютный путь от корня */
+    }
+    .play-pause-btn.pause {
+        background-image: url('/Images/pause.png');
+    }
     .volume-slider-wrapper { width: 25px; }
     .volume-slider {
         width: 140px;
