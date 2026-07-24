@@ -270,10 +270,10 @@ html, body {
     color: transparent;     
 }
 .play-pause-btn.play {
-    background-image: url('../Images/play.png');
+    background-image: url('Images/play.png');
 }
 .play-pause-btn.pause {
-    background-image: url('../Images/pause.png');
+    background-image: url('Images/pause.png');
 }
 .play-pause-btn:hover {
     opacity: 0.7;
