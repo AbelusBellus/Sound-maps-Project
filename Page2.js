@@ -131,8 +131,10 @@ function stopCurrentAudio() {
         currentAudio.currentTime = 0;
         currentAudio = null;
         isPlaying = false;
-        if (playPauseBtn) playPauseBtn.textContent = '▶';
-        if (timeSlider) timeSlider.value = 0;
+    if (playPauseBtn) {
+    playPauseBtn.classList.remove('play', 'pause');
+    playPauseBtn.classList.add('pause');  // когда на паузе
+}        if (timeSlider) timeSlider.value = 0;
     }
 }
 
@@ -161,8 +163,10 @@ function bindAudioEvents(audio) {
     audio.addEventListener('timeupdate', syncTimeSlider);
     audio.addEventListener('ended', () => {
         if (timeSlider) timeSlider.value = 0;
-        if (playPauseBtn) playPauseBtn.textContent = '▶';
-        isPlaying = false;
+    if (playPauseBtn) {
+    playPauseBtn.classList.remove('play', 'pause');
+    playPauseBtn.classList.add('pause');  // когда на паузе
+}        isPlaying = false;
         currentAudio = null;
     });
     if (volumeSlider) {
