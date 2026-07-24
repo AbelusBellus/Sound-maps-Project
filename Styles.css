@@ -268,7 +268,7 @@ html, body {
     outline: none;
 }
 .play-pause-btn.play {
-    background-image: url('../Images/play.png'); /* путь относительно CSS */
+    background-image: url('../Images/play.png');
 }
 .play-pause-btn.pause {
     background-image: url('../Images/pause.png');

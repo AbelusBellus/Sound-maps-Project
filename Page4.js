@@ -162,9 +162,10 @@ function stopCurrentAudio() {
         currentAudio = null;
         isPlaying = false;
     if (playPauseBtn) {
-    playPauseBtn.classList.remove('play', 'pause');
-    playPauseBtn.classList.add('pause');  // когда на паузе
-}        if (timeSlider) timeSlider.value = 0;
+    playPauseBtn.classList.remove('play');
+    playPauseBtn.classList.add('pause');
+}
+    if (timeSlider) timeSlider.value = 0;
     }
 }
 
@@ -193,9 +194,9 @@ function bindAudioEvents(audio) {
     audio.addEventListener('timeupdate', syncTimeSlider);
     audio.addEventListener('ended', () => {
         if (timeSlider) timeSlider.value = 0;
-    if (playPauseBtn) {
-    playPauseBtn.classList.remove('play', 'pause');
-    playPauseBtn.classList.add('pause');  // когда на паузе
+if (playPauseBtn) {
+    playPauseBtn.classList.remove('play');
+    playPauseBtn.classList.add('pause');
 }        isPlaying = false;
         currentAudio = null;
     });
@@ -220,8 +221,10 @@ function addMarkerToMap(markerData) {
             updateInfoPanel(markerData);
             audio.play().then(() => {
                 isPlaying = true;
-                if (playPauseBtn) playPauseBtn.textContent = '⏸';
-            }).catch(e => console.warn('Play error:', e));
+if (playPauseBtn) {
+    playPauseBtn.classList.remove('pause');
+    playPauseBtn.classList.add('play');
+}            }).catch(e => console.warn('Play error:', e));
         } else {
             alert('Звук не задан');
         }
@@ -409,6 +412,10 @@ function initPlayerControls() {
     volumeSlider = document.getElementById('volumeSlider');
     playPauseBtn = document.getElementById('playPauseBtn');
 
+    if (playPauseBtn) {
+    playPauseBtn.classList.add('pause');
+}
+
     if (timeSlider) {
         timeSlider.addEventListener('input', (e) => {
             if (currentAudio && !isNaN(currentAudio.duration)) {
@@ -424,21 +431,23 @@ function initPlayerControls() {
             }
         });
     }
-    if (playPauseBtn) {
-        playPauseBtn.addEventListener('click', () => {
-            if (currentAudio) {
-                if (isPlaying) {
-                    currentAudio.pause();
-                    isPlaying = false;
-                    playPauseBtn.textContent = '▶';
-                } else {
-                    currentAudio.play().catch(e => console.warn(e));
-                    isPlaying = true;
-                    playPauseBtn.textContent = '⏸';
-                }
+if (playPauseBtn) {
+    playPauseBtn.addEventListener('click', () => {
+        if (currentAudio) {
+            if (isPlaying) {
+                currentAudio.pause();
+                isPlaying = false;
+                playPauseBtn.classList.remove('play');
+                playPauseBtn.classList.add('pause');
+            } else {
+                currentAudio.play().catch(e => console.warn(e));
+                isPlaying = true;
+                playPauseBtn.classList.remove('pause');
+                playPauseBtn.classList.add('play');
             }
-        });
-    }
+        }
+    });
+}
 }
 
 // ==================== ЗАПУСК ====================
