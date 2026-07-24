@@ -266,6 +266,8 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     outline: none;
+    font-size: 0;          
+    color: transparent;     
 }
 .play-pause-btn.play {
     background-image: url('../Images/play.png');
