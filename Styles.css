@@ -503,10 +503,10 @@ html, body {
         background-position: center;
     }
     .play-pause-btn.play {
-        background-image: url('/Images/play.png');
+        background-image: url('Images/play.png');
     }    
     .play-pause-btn.pause {
-        background-image: url('/Images/pause.png');
+        background-image: url('Images/pause.png');
     }
     .volume-slider-wrapper { width: 25px; }
     .volume-slider {
