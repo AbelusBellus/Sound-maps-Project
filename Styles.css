@@ -504,6 +504,7 @@ html, body {
     }
     .play-pause-btn.play {
         background-image: url('/Images/play.png');
+    }    
     .play-pause-btn.pause {
         background-image: url('/Images/pause.png');
     }
