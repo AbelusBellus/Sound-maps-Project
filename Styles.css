@@ -503,8 +503,7 @@ html, body {
         background-position: center;
     }
     .play-pause-btn.play {
-        background-image: url('/Images/play.png'); /* абсолютный путь от корня */
-    }
+        background-image: url('/Images/play.png');
     .play-pause-btn.pause {
         background-image: url('/Images/pause.png');
     }
