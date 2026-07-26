@@ -29,6 +29,16 @@ let isPlaying = false;
 // Элементы плеера
 let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
+// Определяем iOS
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// Если iOS, добавляем класс на body
+if (isIOS()) {
+    document.body.classList.add('ios-device');
+}
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
     map = L.map('map', {

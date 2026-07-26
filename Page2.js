@@ -17,6 +17,16 @@ let isPlaying = false;
 // Элементы плеера
 let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
+// Определяем iOS
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// Если iOS, добавляем класс на body
+if (isIOS()) {
+    document.body.classList.add('ios-device');
+}
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
     map = L.map('map', {
@@ -34,34 +44,50 @@ function initMap() {
 }
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
-function loadMarkersFromStorage() {
-    const stored = localStorage.getItem('moscowMarkers');
-    if (stored) {
-        allMarkersData = JSON.parse(stored);
-        allMarkersData.forEach(m => {
-            if (!m.noiseParams) {
-                m.noiseParams = {
-                    radius: Math.random() * 200 + 50,
-                    color: `hsla(${Math.random() * 360}, 70%, 60%, 0.5)`
-                };
-            }
-        });
-        saveMarkersToStorage();
-    } else {
-        allMarkersData = [
-            { lat: 55.7558, lng: 37.6173, title: 'Красная площадь', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 150, color: 'hsla(0, 70%, 60%, 0.5)' } },
-            { lat: 55.7512, lng: 37.6184, title: 'Центр Москвы', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.7340, lng: 37.5880, title: 'Парк Горького', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 180, color: 'hsla(80, 70%, 60%, 0.5)' } },
-            { lat: 55.7600, lng: 37.6400, title: 'Ночной клуб', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 100, color: 'hsla(260, 70%, 60%, 0.5)' } },
-            { lat: 55.7890, lng: 37.6300, title: 'Ботанический сад', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 140, color: 'hsla(120, 70%, 60%, 0.5)' } },
-            { lat: 55.7100, lng: 37.5600, title: 'Воробьёвы горы', soundUrl: 'Sounds/Schottkey.mp3', phase: 'day', noiseParams: { radius: 160, color: 'hsla(40, 70%, 60%, 0.5)' } }
-        ];
-        saveMarkersToStorage();
-    }
+// ========== FIREBASE ==========
+let dbRef = database.ref('markers/NijnyNovgorod');
+
+// Загрузка маркеров из Firebase
+function loadMarkersFromFirebase() {
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && Array.isArray(data) && data.length > 0) {
+            allMarkersData = data;
+            // Добавляем недостающие noiseParams (если их нет)
+            allMarkersData.forEach(m => {
+                if (!m.noiseParams) {
+                    m.noiseParams = {
+                        radius: Math.random() * 200 + 50,
+                        color: `hsla(${Math.random() * 360}, 70%, 60%, 0.5)`
+                    };
+                }
+            });
+        } else {
+            // Если данных нет – создаём начальные маркеры и сохраняем их
+            allMarkersData = getDefaultMarkers();
+            saveMarkersToFirebase();
+        }
+        refreshMarkers();
+    }, (error) => {
+        console.error('Ошибка загрузки данных из Firebase:', error);
+        // В случае ошибки загружаем начальные маркеры локально
+        allMarkersData = getDefaultMarkers();
+        refreshMarkers();
+    });
 }
 
-function saveMarkersToStorage() {
-    localStorage.setItem('moscowMarkers', JSON.stringify(allMarkersData));
+// Сохранение маркеров в Firebase
+function saveMarkersToFirebase() {
+    dbRef.set(allMarkersData)
+        .then(() => console.log('Маркеры сохранены в Firebase'))
+        .catch((error) => console.error('Ошибка сохранения:', error));
+}
+
+// Функция с начальными маркерами (ваш массив)
+function getDefaultMarkers() {
+    return [
+       
+    ];
 }
 
 // ==================== ШУМОВЫЕ КРУГИ ====================
@@ -252,7 +278,7 @@ window.deleteMarker = function(index) {
     if (!isAdmin) { alert('Нет прав'); return; }
     if (confirm('Удалить маркер?')) {
         allMarkersData.splice(index, 1);
-        saveMarkersToStorage();
+        saveMarkersToFirebase();
         refreshMarkers();
         renderMarkersList();
     }
@@ -263,7 +289,7 @@ function addMarker(lat, lng, title, soundUrl) {
     const noiseParams = generateRandomNoiseParams();
     const newMarker = { lat, lng, title, soundUrl, phase: 'day', noiseParams };
     allMarkersData.push(newMarker);
-    saveMarkersToStorage();
+        saveMarkersToFirebase();
     refreshMarkers();
     renderMarkersList();
     console.log('Маркер добавлен', newMarker);
@@ -273,7 +299,7 @@ function clearAllMarkers() {
     if (!isAdmin) return;
     if (confirm('Удалить все маркеры?')) {
         allMarkersData = [];
-        saveMarkersToStorage();
+        saveMarkersToFirebase();
         refreshMarkers();
         renderMarkersList();
     }
@@ -406,7 +432,7 @@ if (playPauseBtn) {
 document.addEventListener('DOMContentLoaded', () => {
     initPlayerControls();
     initMap();
-    loadMarkersFromStorage();
+    loadMarkersFromFirebase();
     checkAuth();
     initNoiseLayer();
     refreshMarkers();

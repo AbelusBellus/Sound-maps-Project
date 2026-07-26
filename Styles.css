@@ -524,4 +524,7 @@ html, body {
         bottom: 10px;
         right: 10px;
     }
+    .ios-device .volume-slider-wrapper {
+        display: none;
+    }
 }

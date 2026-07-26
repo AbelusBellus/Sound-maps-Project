@@ -10,6 +10,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-ellipse@0.1.0/leaflet-ellipse.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+    // ===== КОНФИГУРАЦИЯ FIREBASE =====
+    // Скопируйте ваш объект firebaseConfig из скриншота
+    const firebaseConfig = {
+        apiKey: "AIzaSyBRddQKAQckcfwToaJUmVynxjI1hrkQWWU",
+        authDomain: "sound-maps-c1853.firebaseapp.com",
+        databaseURL: "https://sound-maps-c1853-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "sound-maps-c1853",
+        storageBucket: "sound-maps-c1853.firebasestorage.app",
+        messagingSenderId: "194917797892",
+        appId: "1:194917797892:web:f73c9b94f98eb71a302551"
+    };
+
+    // Инициализируем Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    console.log('Firebase инициализирован!');
+</script>
 </head>
 <body>
 <div class="page">

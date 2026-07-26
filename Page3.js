@@ -16,6 +16,16 @@ let isPlaying = false;
 
 let infoPanel, coordinateSpan, locationSpan, timeSlider, volumeSlider, playPauseBtn;
 
+// Определяем iOS
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+// Если iOS, добавляем класс на body
+if (isIOS()) {
+    document.body.classList.add('ios-device');
+}
 // ==================== ИНИЦИАЛИЗАЦИЯ КАРТЫ ====================
 function initMap() {
     map = L.map('map', {
@@ -23,7 +33,7 @@ function initMap() {
         maxBoundsViscosity: 1.0,
         minZoom: 13,
         maxZoom: 16
-    }).setView([55.4246, 37.5547], 14);
+    }).setView([55.4246, 37.5547], 13);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CartoDB',
@@ -34,7 +44,6 @@ function initMap() {
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
 // ========== FIREBASE ==========
-// Ссылка на узел базы данных для Подольска
 let dbRef = database.ref('markers/podolsk');
 
 // Загрузка маркеров из Firebase
