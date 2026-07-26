@@ -429,7 +429,7 @@ function initPlayerControls() {
 document.addEventListener('DOMContentLoaded', () => {
     initPlayerControls();
     initMap();
-    loadMarkersFromStorage();
+    loadMarkersFromServer();
     checkAuth();
     initNoiseLayer();
     refreshMarkers();
