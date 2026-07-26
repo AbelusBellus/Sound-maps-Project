@@ -33,14 +33,17 @@ function initMap() {
 }
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
-// Загрузка маркеров с сервера
-async function loadMarkersFromServer() {
-    try {
-        const response = await fetch('/api/markers.php?action=get');
-        const data = await response.json();
-        if (Array.isArray(data)) {
+// ========== FIREBASE ==========
+// Ссылка на узел базы данных для Подольска
+let dbRef = database.ref('markers/podolsk');
+
+// Загрузка маркеров из Firebase
+function loadMarkersFromFirebase() {
+    dbRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && Array.isArray(data) && data.length > 0) {
             allMarkersData = data;
-            // Добавляем недостающие noiseParams (если нужно)
+            // Добавляем недостающие noiseParams (если их нет)
             allMarkersData.forEach(m => {
                 if (!m.noiseParams) {
                     m.noiseParams = {
@@ -50,33 +53,33 @@ async function loadMarkersFromServer() {
                 }
             });
         } else {
-            allMarkersData = []; // если данных нет
+            // Если данных нет – создаём начальные маркеры и сохраняем их
+            allMarkersData = getDefaultMarkers();
+            saveMarkersToFirebase();
         }
-    } catch (e) {
-        console.error('Ошибка загрузки маркеров:', e);
-        allMarkersData = []; // или загрузить дефолтные
-    }
-    refreshMarkers();
+        refreshMarkers();
+    }, (error) => {
+        console.error('Ошибка загрузки данных из Firebase:', error);
+        // В случае ошибки загружаем начальные маркеры локально
+        allMarkersData = getDefaultMarkers();
+        refreshMarkers();
+    });
 }
 
-// Сохранение маркеров на сервер
-async function saveMarkersToServer() {
-    try {
-        const response = await fetch('/api/markers.php?action=save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': sessionStorage.getItem('adminHashPodolsk') || ''
-            },
-            body: JSON.stringify(allMarkersData)
-        });
-        const result = await response.json();
-        if (!result.success) {
-            console.warn('Ошибка сохранения на сервере');
-        }
-    } catch (e) {
-        console.error('Ошибка сохранения:', e);
-    }
+// Сохранение маркеров в Firebase
+function saveMarkersToFirebase() {
+    dbRef.set(allMarkersData)
+        .then(() => console.log('Маркеры сохранены в Firebase'))
+        .catch((error) => console.error('Ошибка сохранения:', error));
+}
+
+// Функция с начальными маркерами (ваш массив)
+function getDefaultMarkers() {
+    return [
+        // ваш список маркеров (скопируйте из старого кода)
+        { lat: 55.433056, lng: 37.563611, title: 'Екатерининский сквер', soundUrl: 'Sounds/ZOOM0012_TrLR.WAV', phase: 'day', noiseParams: { radius: 120, color: 'hsla(200, 70%, 60%, 0.5)' } },
+        // ... и так далее
+    ];
 }
 
 // ==================== ШУМОВЫЕ КРУГИ ====================
@@ -273,7 +276,7 @@ window.deleteMarker = function(index) {
     if (!isAdmin) { alert('Нет прав'); return; }
     if (confirm('Удалить маркер?')) {
         allMarkersData.splice(index, 1);
-        saveMarkersToStorage();
+        saveMarkersToFirebase();
         refreshMarkers();
         renderMarkersList();
     }
@@ -284,7 +287,7 @@ function addMarker(lat, lng, title, soundUrl) {
     const noiseParams = generateRandomNoiseParams();
     const newMarker = { lat, lng, title, soundUrl, phase: 'day', noiseParams };
     allMarkersData.push(newMarker);
-    saveMarkersToStorage();
+    saveMarkersToFirebase();
     refreshMarkers();
     renderMarkersList();
     console.log('Маркер добавлен', newMarker);
@@ -294,7 +297,7 @@ function clearAllMarkers() {
     if (!isAdmin) return;
     if (confirm('Удалить все маркеры?')) {
         allMarkersData = [];
-        saveMarkersToStorage();
+        saveMarkersToFirebase();
         refreshMarkers();
         renderMarkersList();
     }
@@ -429,7 +432,7 @@ function initPlayerControls() {
 document.addEventListener('DOMContentLoaded', () => {
     initPlayerControls();
     initMap();
-    loadMarkersFromServer();
+    loadMarkersFromFirebase();
     checkAuth();
     initNoiseLayer();
     refreshMarkers();
