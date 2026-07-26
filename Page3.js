@@ -33,7 +33,7 @@ function initMap() {
         maxBoundsViscosity: 1.0,
         minZoom: 13,
         maxZoom: 16
-    }).setView([55.4246, 37.5547], 13);
+    }).setView([55.4246, 37.5547], 15);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CartoDB',
