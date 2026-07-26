@@ -2,7 +2,7 @@
 const ADMIN_PASSWORD = 'INFJ';
 const ADMIN_PASSWORD_HASH = CryptoJS.MD5(ADMIN_PASSWORD).toString();
 
-const CITY_BOUNDS = L.latLngBounds([55.36, 37.45], [55.47, 37.62]);
+const CITY_BOUNDS = L.latLngBounds([55.34, 37.40], [55.47, 37.62]);
 // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
 let map;
 let markers = [];
