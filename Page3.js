@@ -33,38 +33,50 @@ function initMap() {
 }
 
 // ==================== РАБОТА С ХРАНИЛИЩЕМ ====================
-function loadMarkersFromStorage() {
-    const stored = localStorage.getItem('podolskMarkers');
-    if (stored) {
-        allMarkersData = JSON.parse(stored);
-        allMarkersData.forEach(m => {
-            if (!m.noiseParams) {
-                m.noiseParams = {
-                    radius: Math.random() * 200 + 50,
-                    color: `hsla(${Math.random() * 360}, 70%, 60%, 0.5)`
-                };
-            }
-        });
-        saveMarkersToStorage();
-    } else {
-        allMarkersData = [
-            { lat: 55.433056, lng: 37.563611, title: 'Екатерининский сквер', soundUrl: 'Sounds/ZOOM0012_TrLR.WAV', phase: 'day', noiseParams: { radius: 120, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 55.441389, lng: 37.494444, title: 'Знаменская церковь', soundUrl: 'Sounds/ZOOM0006_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(30, 70%, 60%, 0.5)' } },
-            { lat: 55.420278, lng: 37.547778, title: 'Капитолий, Торговый центр', soundUrl: 'Sounds/ZOOM0022_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(60, 70%, 60%, 0.5)' } },
-            { lat: 55.418889, lng: 37.483611, title: 'Бульвар 65-летия Победы', soundUrl: 'Sounds/ZOOM0008_TrLR.WAV', phase: 'day', noiseParams: { radius: 140, color: 'hsla(90, 70%, 60%, 0.5)' } },
-            { lat: 55.435833, lng: 37.551667, title: 'Мост над рекой Пахрой', soundUrl: 'Sounds/ZOOM0018_TrLR.WAV', phase: 'day', noiseParams: { radius: 100, color: 'hsla(160, 70%, 60%, 0.5)' } },
-            { lat: 55.436944, lng: 37.564167, title: 'Рабочая улица', soundUrl: 'Sounds/ZOOM0013_TrLR.WAV', phase: 'day', noiseParams: { radius: 90, color: 'hsla(200, 70%, 60%, 0.5)' } },
-            { lat: 55.440833, lng: 37.499167, title: 'Смотровая площадка', soundUrl: 'Sounds/ZOOM0007_TrLR.WAV', phase: 'day', noiseParams: { radius: 160, color: 'hsla(240, 70%, 60%, 0.5)' } },
-            { lat: 55.431667, lng: 37.565278, title: 'Станция Подольск', soundUrl: 'Sounds/ZOOM0010_TrLR.WAV', phase: 'day', noiseParams: { radius: 130, color: 'hsla(280, 70%, 60%, 0.5)' } },
-            { lat: 55.433611, lng: 37.546389, title: 'Троицкий собор', soundUrl: 'Sounds/ZOOM0020_TrLR.WAV', phase: 'day', noiseParams: { radius: 150, color: 'hsla(320, 70%, 60%, 0.5)' } },
-            { lat: 55.430659, lng: 37.545310, title: 'Памятник Ленину', soundUrl: 'Sounds/ZOOM0011_TrLR.WAV', phase: 'day', noiseParams: { radius: 110, color: 'hsla(50, 70%, 60%, 0.5)' } }
-        ];
-        saveMarkersToStorage();
+// Загрузка маркеров с сервера
+async function loadMarkersFromServer() {
+    try {
+        const response = await fetch('/api/markers.php?action=get');
+        const data = await response.json();
+        if (Array.isArray(data)) {
+            allMarkersData = data;
+            // Добавляем недостающие noiseParams (если нужно)
+            allMarkersData.forEach(m => {
+                if (!m.noiseParams) {
+                    m.noiseParams = {
+                        radius: Math.random() * 200 + 50,
+                        color: `hsla(${Math.random() * 360}, 70%, 60%, 0.5)`
+                    };
+                }
+            });
+        } else {
+            allMarkersData = []; // если данных нет
+        }
+    } catch (e) {
+        console.error('Ошибка загрузки маркеров:', e);
+        allMarkersData = []; // или загрузить дефолтные
     }
+    refreshMarkers();
 }
 
-function saveMarkersToStorage() {
-    localStorage.setItem('podolskMarkers', JSON.stringify(allMarkersData));
+// Сохранение маркеров на сервер
+async function saveMarkersToServer() {
+    try {
+        const response = await fetch('/api/markers.php?action=save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': sessionStorage.getItem('adminHashPodolsk') || ''
+            },
+            body: JSON.stringify(allMarkersData)
+        });
+        const result = await response.json();
+        if (!result.success) {
+            console.warn('Ошибка сохранения на сервере');
+        }
+    } catch (e) {
+        console.error('Ошибка сохранения:', e);
+    }
 }
 
 // ==================== ШУМОВЫЕ КРУГИ ====================
